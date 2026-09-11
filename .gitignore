@@ -1,0 +1,10 @@
+.env
+venv/
+__pycache__/
+*.pyc
+*.db
+logs/*.log
+.pytest_cache/
+instance/
+validation-experiments/*_creation_response.json
+validation-experiments/*_final_result.json

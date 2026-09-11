@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+{% block title %}Operations Console — CareFlow AI{% endblock %}
+
+{% block content %}
+
+  {# CareFlow professional dashboard composition #}
+{# CareFlow command center hero #}
+  <section class="command-hero">
+    <div class="command-hero-copy">
+      <span class="eyebrow">CARE OPERATIONS COMMAND CENTER</span>
+      <h2>AI follow-up that turns patient calls into clear clinical action.</h2>
+      <p>
+        CareFlow coordinates post-discharge follow-up, structures recovery responses,
+        identifies risk, and surfaces escalations for human review.
+      </p>
+
+      <div class="hero-meta">
+        <span class="hero-status">
+          <span class="status-dot"></span>
+          CALL-E integration ready
+        </span>
+        <span>Synthetic demo data</span>
+      </div>
+    </div>
+
+    <div class="command-hero-action">
+      <a class="primary-demo-cta"
+         href="{{ url_for('dashboard.demo_mode_index') }}">
+        <span class="cta-icon">&#9654;</span>
+        <span>
+          <strong>Run Demo Mode</strong>
+          <small>One-click scenario walkthrough</small>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <div id="snapshot" class="section-heading kpi-section-heading">
+    <div>
+      <span class="eyebrow">TODAY AT A GLANCE</span>
+      <h2>Operational Snapshot</h2>
+    </div>
+    <span class="section-caption">Live CareFlow activity</span>
+  </div>
+<section class="kpi-row">
+  <div class="kpi-card"><span class="kpi-value">{{ kpis.total_patients }}</span><span class="kpi-label">Total Patients</span></div>
+  <div class="kpi-card"><span class="kpi-value">{{ kpis.pending_follow_ups }}</span><span class="kpi-label">Pending Follow-ups</span></div>
+  <div class="kpi-card kpi-danger"><span class="kpi-value">{{ kpis.high_risk_patients }}</span><span class="kpi-label">High-Risk Patients</span></div>
+  <div class="kpi-card kpi-escalation"><span class="kpi-value">{{ kpis.escalations_awaiting_acknowledgement }}</span><span class="kpi-label">Escalations Awaiting Ack.</span></div>
+  <div class="kpi-card kpi-good"><span class="kpi-value">{{ kpis.calls_completed_today }}</span><span class="kpi-label">Calls Completed Today</span></div>
+</section>
+
+  {# CareFlow operational intelligence layer v2 #}
+
+  <nav class="command-nav" aria-label="Dashboard sections">
+    <a href="#snapshot">
+      <span class="nav-symbol">01</span>
+      <span>Snapshot</span>
+    </a>
+    <a href="#operations">
+      <span class="nav-symbol">02</span>
+      <span>Operations</span>
+    </a>
+    <a href="#patients">
+      <span class="nav-symbol">03</span>
+      <span>Patients</span>
+    </a>
+    <a href="#activity">
+      <span class="nav-symbol">04</span>
+      <span>Activity</span>
+    </a>
+    <a href="#health">
+      <span class="nav-symbol">05</span>
+      <span>Health</span>
+    </a>
+  </nav>
+
+  <section class="operational-signal
+    {% if kpis.escalations_awaiting_acknowledgement > 0 %}
+      signal-critical
+    {% elif kpis.high_risk_patients > 0 %}
+      signal-elevated
+    {% else %}
+      signal-stable
+    {% endif %}
+  ">
+    <div class="signal-icon-wrap">
+      <span class="signal-icon"></span>
+    </div>
+
+    <div class="signal-copy">
+      <span class="eyebrow">CAREFLOW OPERATIONAL SIGNAL</span>
+
+      {% if kpis.escalations_awaiting_acknowledgement > 0 %}
+        <h3>Immediate operational attention required</h3>
+        <p>
+          {{ kpis.escalations_awaiting_acknowledgement }}
+          escalation{% if kpis.escalations_awaiting_acknowledgement != 1 %}s{% endif %}
+          awaiting acknowledgement.
+        </p>
+
+      {% elif kpis.high_risk_patients > 0 %}
+        <h3>Elevated monitoring active</h3>
+        <p>
+          {{ kpis.high_risk_patients }}
+          high-risk patient{% if kpis.high_risk_patients != 1 %}s{% endif %}
+          identified, with no escalation currently awaiting acknowledgement.
+        </p>
+
+      {% else %}
+        <h3>Operations currently stable</h3>
+        <p>
+          No high-risk patients or unacknowledged escalations are currently active.
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="signal-facts">
+      <div class="signal-fact">
+        <strong>{{ kpis.high_risk_patients }}</strong>
+        <span>High Risk</span>
+      </div>
+
+      <div class="signal-fact">
+        <strong>{{ kpis.escalations_awaiting_acknowledgement }}</strong>
+        <span>Awaiting Ack.</span>
+      </div>
+
+      <div class="signal-fact">
+        <strong>{{ health.voice_provider }}</strong>
+        <span>Voice Provider</span>
+      </div>
+    </div>
+  </section>
+
+
+
+<div id="operations" class="section-heading">
+    <div>
+      <span class="eyebrow">LIVE OPERATIONS</span>
+      <h2>Care Coordination Overview</h2>
+    </div>
+    <span class="section-caption">Current operational state</span>
+  </div>
+
+  <section class="console-grid">
+  <div class="console-card attention">
+    <h2>Needs Attention</h2>
+    <p class="count">{{ needs_attention|length }}</p>
+    {% for esc in needs_attention %}
+      <div class="mini-row">
+        <a href="{{ url_for('dashboard.call_detail', call_id=esc.risk_assessment.call_id) }}">
+          {{ esc.risk_assessment.call.discharge.patient.full_name }}
+        </a>
+        <span class="badge badge-high">{{ esc.risk_assessment.risk_level|upper }}</span>
+        <span class="muted">{{ esc.status }}</span>
+        {% if esc.status != "acknowledged" %}
+        <form method="post" action="{{ url_for('dashboard.acknowledge_escalation_form', escalation_id=esc.id) }}" class="inline-ack-form">
+          <button type="submit" class="ack-button">Acknowledge</button>
+        </form>
+        {% endif %}
+      </div>
+    {% else %}
+      <p class="muted">No patients currently need attention.</p>
+    {% endfor %}
+  </div>
+
+  <div class="console-card pending">
+    <h2>Pending Follow-ups</h2>
+    <p class="count">{{ pending_follow_ups|length }}</p>
+    {% for d in pending_follow_ups %}
+      <div class="mini-row">
+        <span>{{ d.patient.full_name }}</span>
+        <span class="muted">{{ d.diagnosis }}</span>
+        <span class="badge badge-neutral">{{ d.status }}</span>
+      </div>
+    {% else %}
+      <p class="muted">No pending follow-ups.</p>
+    {% endfor %}
+  </div>
+
+  <div class="console-card escalations">
+    <h2>Unresolved Escalations</h2>
+    <p class="count">{{ unresolved_escalations|length }}</p>
+    {% for esc in unresolved_escalations %}
+      <div class="mini-row">
+        <a href="{{ url_for('dashboard.call_detail', call_id=esc.risk_assessment.call_id) }}">
+          #{{ esc.id }} — {{ esc.risk_assessment.call.discharge.patient.full_name }}
+        </a>
+        <span class="muted">{{ esc.action_taken or 'pending notification' }}</span>
+        {% if esc.status != "acknowledged" %}
+        <form method="post" action="{{ url_for('dashboard.acknowledge_escalation_form', escalation_id=esc.id) }}" class="inline-ack-form">
+          <button type="submit" class="ack-button">Acknowledge</button>
+        </form>
+        {% endif %}
+      </div>
+    {% else %}
+      <p class="muted">No unresolved escalations.</p>
+    {% endfor %}
+  </div>
+
+  <div class="console-card completed-today">
+    <h2>Calls Completed Today</h2>
+    <p class="count">{{ calls_completed_today|length }}</p>
+    {% for call in calls_completed_today %}
+      <div class="mini-row">
+        <a href="{{ url_for('dashboard.call_detail', call_id=call.id) }}">
+          {{ call.discharge.patient.full_name }}
+        </a>
+        <span class="badge badge-{{ call.risk_assessment.risk_level if call.risk_assessment else 'neutral' }}">
+          {{ call.risk_assessment.risk_level|upper if call.risk_assessment else '—' }}
+        </span>
+      </div>
+    {% else %}
+      <p class="muted">No calls completed yet today.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<details class="panel demo-panel advanced-controls">
+    <summary>
+      <span>
+        <strong>Advanced Demo Controls</strong>
+        <small>Manual patient creation and CALL-E workflow controls</small>
+      </span>
+      <span class="provider-chip">Provider: {{ voice_provider }}</span>
+    </summary>
+  <div class="demo-forms">
+    <form method="post" action="{{ url_for('dashboard.create_patient_form') }}" class="demo-form">
+      <h3>1. Create synthetic patient</h3>
+      <input type="text" name="full_name" placeholder="Demo Patient Name" required>
+      <input type="text" name="phone_number" placeholder="+15550001234" required>
+      <button type="submit">Create Patient</button>
+    </form>
+
+    <form method="post" action="{{ url_for('dashboard.create_discharge_and_call_form') }}" class="demo-form">
+      <h3>2 &amp; 3. Discharge patient &amp; initiate CALL-E follow-up</h3>
+      <select name="patient_id" required>
+        <option value="" disabled selected>Select patient</option>
+        {% for patient in patients %}
+          <option value="{{ patient.id }}">{{ patient.full_name }} ({{ patient.synthetic_mrn }})</option>
+        {% endfor %}
+      </select>
+      <input type="text" name="diagnosis" placeholder="Diagnosis" required>
+      <button type="submit">Discharge &amp; Call</button>
+    </form>
+  </div>
+  <p class="muted advanced-help">Then open a call below to simulate the webhook, watch the risk score, care summary, and event timeline update.</p>
+  </details>
+
+{# CareFlow mobile registry collapse #}
+<details id="patients" class="panel registry-panel">
+  <summary class="registry-summary">
+    <span>
+      <span class="eyebrow">PATIENT DIRECTORY</span>
+      <strong>Synthetic Patient Registry</strong>
+      <small>{{ patients|length }} synthetic patient{% if patients|length != 1 %}s{% endif %}</small>
+    </span>
+  </summary>
+  <div class="registry-content">
+    <table class="patient-table">
+    <thead><tr><th>Name</th><th>Synthetic MRN</th><th>Phone</th><th>Discharges</th></tr></thead>
+    <tbody>
+      {% for patient in patients %}
+      <tr>
+        <td>{{ patient.full_name }}</td>
+        <td>{{ patient.synthetic_mrn }}</td>
+        <td>{{ patient.phone_number }}</td>
+        <td>{{ patient.discharges|length }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4">No patients yet — run <code>python -m app.seed</code> or use the form above.</td></tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+</details>
+
+<section id="activity" class="panel">
+  <div class="activity-heading">
+      <div>
+        <span class="eyebrow">AUDIT TRAIL</span>
+        <h2>Recent Activity</h2>
+      </div>
+      <span class="activity-caption">Latest workflow events</span>
+    </div>
+  <ul class="timeline">
+    {% for event in recent_events %}
+      <li class="timeline-item">
+        <span class="timeline-time">{{ event.created_at.strftime('%m-%d %H:%M') }}</span>
+        <span class="timeline-title">{{ event.title }}</span>
+        {% if event.description %}
+            {% if event.title == "Notification sent via log" %}
+              <span class="timeline-desc">Demo notification logged — external delivery is disabled in Demo Mode.</span>
+            {% else %}
+              <span class="timeline-desc">{{ event.description }}</span>
+            {% endif %}
+          {% endif %}
+      </li>
+    {% else %}
+      <li class="muted">No activity yet.</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section id="health" class="panel health-panel">
+  <h2>System Health</h2>
+  <div class="health-grid">
+    <div class="health-item">
+      <span class="health-label">Voice Provider</span>
+      <span class="health-value">
+        {{ health.voice_provider }}
+        <span class="badge {{ 'badge-low' if health.voice_provider_status == 'ready' else 'badge-high' }}">
+          {{ health.voice_provider_status }}
+        </span>
+      </span>
+    </div>
+    <div class="health-item">
+      <span class="health-label">Notification Service</span>
+      <span class="health-value">{{ health.notification_service }}</span>
+    </div>
+    <div class="health-item">
+      <span class="health-label">Database</span>
+      <span class="health-value">
+        <span class="badge {{ 'badge-low' if health.database_status == 'connected' else 'badge-high' }}">
+          {{ health.database_status }}
+        </span>
+      </span>
+    </div>
+    <div class="health-item">
+      <span class="health-label">Last Webhook Received</span>
+      <span class="health-value">
+        {{ health.last_webhook_at.strftime('%Y-%m-%d %H:%M:%S') if health.last_webhook_at else 'None yet' }}
+      </span>
+    </div>
+    <div class="health-item">
+      <span class="health-label">Demo Mode</span>
+      <span class="health-value">
+        <span class="badge {{ 'badge-low' if health.demo_mode_available else 'badge-high' }}">
+          {{ 'Available (' ~ health.demo_scenario_count ~ ' scenarios)' if health.demo_mode_available else 'Unavailable' }}
+        </span>
+      </span>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

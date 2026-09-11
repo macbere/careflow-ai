@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Demo Mode — CareFlow AI{% endblock %}
+
+{% block content %}
+
+<p><a href="{{ url_for('dashboard.index') }}">&larr; Back to dashboard</a></p>
+
+<section class="panel">
+  <h2>Demo Mode</h2>
+  <p class="muted">
+    Each button below runs the entire CareFlow workflow end to end in one click — a synthetic
+    patient is created, discharged, called via CALL-E (mock mode, no live credits used),
+    and the resulting risk assessment, care summary, and (where applicable) escalation are
+    generated automatically. You'll land directly on the completed call's detail page.
+  </p>
+
+  <div class="scenario-grid">
+    {% for key, scenario in scenarios.items() %}
+    <div class="scenario-card scenario-{{ key }}">
+      <h3>{{ scenario.label }}</h3>
+      <p class="muted">{{ scenario.description }}</p>
+      <p class="scenario-expected"><strong>Expected:</strong> {{ scenario.expected_outcome }}</p>
+      <form method="post" action="{{ url_for('dashboard.demo_mode_run') }}">
+        <input type="hidden" name="scenario_key" value="{{ key }}">
+        <button type="submit">Run "{{ scenario.label }}"</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

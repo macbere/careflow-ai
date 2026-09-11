@@ -1,0 +1,337 @@
+{% extends "base.html" %}
+{% block title %}Call #{{ call.id }} — CareFlow AI{% endblock %}
+
+{% block content %}
+
+{# CareFlow final high-risk presentation polish #}
+{# CareFlow current escalation status presentation #}
+
+<a class="detail-back-link" href="{{ url_for('dashboard.index') }}">
+  &larr; Back to CareFlow Command Center
+</a>
+
+<section class="detail-context-card">
+  <div>
+    <span class="eyebrow">FOLLOW-UP CASE</span>
+    <h1>{{ call.discharge.patient.full_name }}</h1>
+    <p>
+      {{ call.discharge.diagnosis }}
+      <span class="context-divider">&middot;</span>
+      Call #{{ call.id }}
+    </p>
+  </div>
+
+  <div class="call-status-pill">
+    <span>Call Status</span>
+    <strong>{{ call.status|replace('_', ' ')|title }}</strong>
+  </div>
+</section>
+
+{% if call.risk_assessment %}
+<section class="risk-hero risk-hero-{{ call.risk_assessment.risk_level }}">
+  <div class="risk-hero-main">
+    <div class="risk-label-row">
+      <span class="risk-indicator"></span>
+      <span class="eyebrow">CAREFLOW RISK ASSESSMENT</span>
+    </div>
+
+    <div class="risk-title-row">
+      <div>
+        <h2>{{ call.risk_assessment.risk_level|upper }} RISK</h2>
+        <p>Structured follow-up assessment completed.</p>
+      </div>
+
+      <div class="risk-score-card">
+        <span>Risk Score</span>
+        <strong>{{ call.risk_assessment.score }}</strong>
+      </div>
+    </div>
+
+    {% if call.care_summary %}
+    <div class="risk-next-action">
+      <span class="action-label">RECOMMENDED NEXT STEP</span>
+      <strong>{{ call.care_summary.recommended_next_step }}</strong>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% elif call.status == "needs_review" %}
+<section class="risk-hero risk-hero-neutral">
+  <div class="risk-hero-main">
+    <span class="eyebrow">DATA QUALITY HOLD</span>
+    <h2>HUMAN REVIEW REQUIRED</h2>
+    <p>
+      CareFlow did not generate an ordinary risk assessment because the structured call
+      result was incomplete, unavailable, or invalid.
+    </p>
+    {% if call.failure_reason %}
+      <p>{{ call.failure_reason }}</p>
+    {% endif %}
+  </div>
+</section>
+{% else %}
+<section class="risk-hero risk-hero-neutral">
+  <div class="risk-hero-main">
+    <span class="eyebrow">CAREFLOW RISK ASSESSMENT</span>
+    <h2>Assessment pending</h2>
+    <p>No completed risk assessment is available for this call yet.</p>
+  </div>
+</section>
+{% endif %}
+
+{% if voice_provider == "mock" and call.status == "in_progress" %}
+<section class="panel detail-demo-panel">
+  <div class="detail-section-heading">
+    <div>
+      <span class="eyebrow">DEMO MODE</span>
+      <h2>Simulation Controls</h2>
+    </div>
+    <span class="badge badge-neutral">No live phone call</span>
+  </div>
+
+  <p class="detail-supporting-copy">
+    Demo Mode simulates the structured outcome consumed by CareFlow's CALL-E integration.
+    No live CALL-E phone call is placed from this control.
+  </p>
+
+  <form method="post"
+        action="{{ url_for('dashboard.simulate_completion_form', call_id=call.id) }}"
+        class="demo-form-inline">
+    <select name="scenario">
+      <option value="low_risk">Low risk outcome</option>
+      <option value="high_risk">High risk outcome (triggers escalation)</option>
+      <option value="random" selected>Random</option>
+    </select>
+    <button type="submit">Simulate Call Completion</button>
+  </form>
+</section>
+{% endif %}
+
+{% if call.risk_assessment and call.risk_assessment.escalation %}
+<section class="escalation-card
+  {% if call.risk_assessment.escalation.status == 'acknowledged' %}
+    escalation-acknowledged
+  {% else %}
+    escalation-active
+  {% endif %}
+">
+  <div class="escalation-top">
+    <div>
+      <span class="eyebrow">HUMAN REVIEW WORKFLOW</span>
+      <h2>Escalation</h2>
+    </div>
+
+    <span class="escalation-status">
+      {{ call.risk_assessment.escalation.status|replace('_', ' ')|upper }}
+    </span>
+  </div>
+
+  {% if "Demo Patient" in call.discharge.patient.full_name
+        and call.risk_assessment.escalation.action_taken
+        and "stub channel" in call.risk_assessment.escalation.action_taken %}
+    <p class="escalation-action demo-delivery-note">
+      Demo notification logged — external delivery is disabled in Demo Mode.
+    </p>
+  {% else %}
+    <p class="escalation-action">
+      {{ call.risk_assessment.escalation.action_taken }}
+    </p>
+  {% endif %}
+
+  {% if call.risk_assessment.escalation.status != "acknowledged" %}
+  <div class="acknowledgement-box">
+    <div>
+      <strong>Human acknowledgement required</strong>
+      <span>Confirm that this escalation has been reviewed.</span>
+    </div>
+
+    <form method="post"
+          action="{{ url_for('dashboard.acknowledge_escalation_form', escalation_id=call.risk_assessment.escalation.id) }}"
+          class="acknowledgement-form">
+      <input type="text"
+             name="note"
+             placeholder="Optional acknowledgement note">
+      <button type="submit" class="ack-button">
+        Acknowledge Escalation
+      </button>
+    </form>
+  </div>
+  {% else %}
+  <div class="acknowledged-box">
+    <span class="ack-check">&#10003;</span>
+    <div>
+      <strong>Escalation acknowledged</strong>
+      <p>
+        Reviewed by {{ call.risk_assessment.escalation.acknowledged_by }}
+        at {{ call.risk_assessment.escalation.acknowledged_at.strftime('%Y-%m-%d %H:%M') }}
+        {% if call.risk_assessment.escalation.acknowledgement_note %}
+          &mdash; "{{ call.risk_assessment.escalation.acknowledgement_note }}"
+        {% endif %}
+      </p>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endif %}
+
+{% if call.care_summary %}
+<section class="panel care-summary-panel">
+  <div class="detail-section-heading">
+    <div>
+      <span class="eyebrow">STRUCTURED OUTCOME</span>
+      <h2>Care Summary</h2>
+    </div>
+    <span class="summary-method">Deterministic safety summary</span>
+  </div>
+
+  <div class="summary-overview-grid">
+    <div class="summary-stat">
+      <span>Recovery Status</span>
+      <strong>{{ call.care_summary.recovery_status }}</strong>
+    </div>
+
+    <div class="summary-stat">
+      <span>Risk Score</span>
+      <strong>{{ call.care_summary.risk_score }}</strong>
+    </div>
+
+    <div class="summary-stat">
+      <span>Escalation</span>
+      <strong>
+        {% if call.risk_assessment
+              and call.risk_assessment.escalation %}
+          {{ call.risk_assessment.escalation.status|replace('_', ' ') }}
+        {% else %}
+          {{ call.care_summary.escalation_status }}
+        {% endif %}
+      </strong>
+    </div>
+  </div>
+
+  <div class="summary-section">
+    <span class="summary-section-label">SYMPTOMS REPORTED</span>
+
+    <div class="symptom-chips">
+      {% for symptom in call.care_summary.symptoms_reported %}
+        <span class="symptom-chip">{{ symptom }}</span>
+      {% else %}
+        <span class="symptom-chip symptom-chip-neutral">No symptom summary available</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="summary-section">
+    <span class="summary-section-label">WHY CAREFLOW FLAGGED THIS CASE</span>
+
+    <ul class="risk-reason-list">
+      {% for reason in call.care_summary.risk_reasons %}
+        <li>
+          <span class="reason-marker"></span>
+          <span>{{ reason }}</span>
+        </li>
+      {% else %}
+        <li>
+          <span class="reason-marker"></span>
+          <span>No concerning factors recorded.</span>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="next-action-card">
+    <span>RECOMMENDED NEXT STEP</span>
+    <strong>{{ call.care_summary.recommended_next_step }}</strong>
+  </div>
+
+  <details class="summary-details">
+    <summary>View case metadata</summary>
+
+    <table class="summary-table">
+      <tr>
+        <th>Patient</th>
+        <td>{{ call.care_summary.patient_name }}</td>
+      </tr>
+      <tr>
+        <th>Diagnosis</th>
+        <td>{{ call.care_summary.discharge_diagnosis }}</td>
+      </tr>
+      <tr>
+        <th>Recovery Status</th>
+        <td>{{ call.care_summary.recovery_status }}</td>
+      </tr>
+      <tr>
+        <th>Risk Score</th>
+        <td>{{ call.care_summary.risk_score }}</td>
+      </tr>
+      <tr>
+        <th>Escalation Status</th>
+        <td>
+          {% if call.risk_assessment
+                and call.risk_assessment.escalation %}
+            {{ call.risk_assessment.escalation.status|replace('_', ' ') }}
+          {% else %}
+            {{ call.care_summary.escalation_status }}
+          {% endif %}
+        </td>
+      </tr>
+    </table>
+  </details>
+</section>
+{% endif %}
+
+<section class="panel detail-timeline-panel">
+  <div class="detail-section-heading">
+    <div>
+      <span class="eyebrow">AUDITABLE WORKFLOW</span>
+      <h2>Event Timeline</h2>
+    </div>
+    <span class="detail-caption">{{ timeline|length }} events</span>
+  </div>
+
+  <ul class="case-timeline">
+    {% for event in timeline %}
+      <li class="case-timeline-item">
+        <div class="case-timeline-marker"></div>
+
+        <div class="case-timeline-content">
+          <span class="case-timeline-time">
+            {{ event.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+          </span>
+
+          <strong>{{ event.title }}</strong>
+
+          {% if event.description %}
+            {% if event.title == "Notification sent via log"
+                  and "Demo Patient" in call.discharge.patient.full_name %}
+              <p class="demo-delivery-note">
+                Demo notification logged — external delivery is disabled in Demo Mode.
+              </p>
+            {% else %}
+              <p>{{ event.description }}</p>
+            {% endif %}
+          {% endif %}
+        </div>
+      </li>
+    {% else %}
+      <li class="muted">No events yet.</li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% if call.transcript %}
+<details class="panel transcript-panel">
+  <summary class="transcript-summary">
+    <span>
+      <span class="eyebrow">CALL EVIDENCE</span>
+      <strong>Call Transcript</strong>
+      <small>Expand to inspect the conversation evidence</small>
+    </span>
+  </summary>
+
+  <div class="transcript-content">
+    <pre class="transcript">{{ call.transcript }}</pre>
+  </div>
+</details>
+{% endif %}
+
+{% endblock %}

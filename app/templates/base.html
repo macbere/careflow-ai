@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}CareFlow AI{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="app-header">
+    <h1>CareFlow AI</h1>
+    <p class="subtitle">AI Care Coordination Platform — synthetic data only</p>
+  </header>
+  <main class="app-main">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-stack">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <script>
+    // Minimal, dependency-free "loading state": disable a form's submit
+    // button on submit so a slow request can't be double-clicked, and show
+    // a working label. No fetch/AJAX involved — the page still does a full
+    // reload on response, per this app's demo-friendly, no-JS-framework
+    // design (see app/api/dashboard.py's module docstring).
+    document.querySelectorAll("form").forEach(function (form) {
+      form.addEventListener("submit", function () {
+        var button = form.querySelector("button[type=submit]");
+        if (button && !button.disabled) {
+          button.dataset.originalText = button.textContent;
+          button.textContent = "Working…";
+          button.disabled = true;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

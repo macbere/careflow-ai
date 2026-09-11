@@ -1,0 +1,2938 @@
+body { font-family: -apple-system, sans-serif; margin: 0; background: #f4f6f8; color: #1c2530; }
+.app-header { background: #1c2530; color: #fff; padding: 1.25rem 2rem; }
+.app-header h1 { margin: 0; font-size: 1.4rem; }
+.subtitle { margin: 0.25rem 0 0; font-size: 0.85rem; color: #a9b4c0; }
+.app-main { padding: 1.5rem 2rem; }
+.panel { background: #fff; border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid #e5e9ed; font-size: 0.9rem; }
+tr.risk-high { background: #fdecea; }
+tr.risk-medium { background: #fff8e6; }
+tr.risk-low { background: #eafaf0; }
+
+/* Phase 2: operations console */
+.console-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.console-card { background: #fff; border-radius: 8px; padding: 1rem 1.25rem; box-shadow: 0 1px 2px rgba(0,0,0,0.08); border-top: 4px solid #ccc; }
+.console-card h2 { margin: 0 0 0.25rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.03em; color: #4a5568; }
+.console-card .count { font-size: 1.8rem; font-weight: 700; margin: 0 0 0.5rem; }
+.console-card.attention { border-top-color: #e53e3e; }
+.console-card.pending { border-top-color: #d69e2e; }
+.console-card.escalations { border-top-color: #dd6b20; }
+.console-card.completed-today { border-top-color: #38a169; }
+.mini-row { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.35rem 0; border-bottom: 1px solid #f0f2f4; font-size: 0.85rem; flex-wrap: wrap; }
+.mini-row a { color: #2b6cb0; text-decoration: none; }
+.mini-row a:hover { text-decoration: underline; }
+.muted { color: #8a94a3; font-size: 0.85rem; }
+
+.badge { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; }
+.badge-high { background: #fed7d7; color: #822727; }
+.badge-medium { background: #feebc8; color: #7b341e; }
+.badge-low { background: #c6f6d5; color: #22543d; }
+.badge-neutral { background: #e2e8f0; color: #2d3748; }
+
+.demo-panel { background: #f7fafc; border: 1px dashed #cbd5e0; }
+.demo-forms { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.demo-form { display: flex; flex-direction: column; gap: 0.4rem; min-width: 240px; }
+.demo-form input, .demo-form select { padding: 0.4rem; border: 1px solid #cbd5e0; border-radius: 4px; }
+.demo-form button, .demo-form-inline button { padding: 0.5rem 1rem; background: #2b6cb0; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+.demo-form-inline { display: flex; gap: 0.5rem; align-items: center; }
+
+.summary-table th { width: 200px; color: #4a5568; }
+
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline-item { display: flex; gap: 0.75rem; padding: 0.4rem 0; border-bottom: 1px solid #f0f2f4; font-size: 0.85rem; align-items: baseline; flex-wrap: wrap; }
+.timeline-time { color: #8a94a3; font-variant-numeric: tabular-nums; min-width: 100px; }
+.timeline-title { font-weight: 600; }
+.timeline-desc { color: #4a5568; }
+
+.transcript { white-space: pre-wrap; background: #f7fafc; padding: 1rem; border-radius: 6px; font-size: 0.85rem; }
+
+/* Phase 3: executive KPI cards */
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+.kpi-card { background: #fff; border-radius: 8px; padding: 1rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+.kpi-value { display: block; font-size: 2rem; font-weight: 800; color: #1c2530; }
+.kpi-label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; color: #8a94a3; margin-top: 0.25rem; }
+.kpi-card.kpi-warn .kpi-value { color: #dd6b20; }
+.kpi-card.kpi-good .kpi-value { color: #38a169; }
+
+.demo-mode-link { margin: 0 0 1rem; }
+.demo-mode-link a { color: #2b6cb0; font-weight: 600; text-decoration: none; }
+.demo-mode-link a:hover { text-decoration: underline; }
+
+.ack-button { padding: 0.15rem 0.6rem; font-size: 0.75rem; background: #38a169; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+.inline-ack-form { display: inline; }
+
+.scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 1rem; }
+.scenario-card { background: #fff; border: 1px solid #e5e9ed; border-radius: 8px; padding: 1rem; border-top: 4px solid #718096; }
+.scenario-card h3 { margin: 0 0 0.4rem; }
+.scenario-expected { font-size: 0.8rem; color: #4a5568; }
+.scenario-card button { margin-top: 0.5rem; padding: 0.5rem 1rem; background: #2b6cb0; color: #fff; border: none; border-radius: 4px; cursor: pointer; width: 100%; }
+.scenario-healthy_recovery { border-top-color: #38a169; }
+.scenario-moderate_concern { border-top-color: #d69e2e; }
+.scenario-high_risk { border-top-color: #e53e3e; }
+.scenario-failed_call { border-top-color: #718096; }
+.scenario-no_answer { border-top-color: #718096; }
+
+/* Final polish: flash messages */
+.flash-stack { margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.flash { padding: 0.65rem 1rem; border-radius: 6px; font-size: 0.9rem; border-left: 4px solid transparent; }
+.flash-success { background: #eafaf0; color: #22543d; border-left-color: #38a169; }
+.flash-error { background: #fdecea; color: #822727; border-left-color: #e53e3e; }
+.flash-info { background: #ebf4ff; color: #2c5282; border-left-color: #3182ce; }
+
+/* Final polish: system health panel */
+.health-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem 1.5rem; }
+.health-item { display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 0; border-bottom: 1px solid #f0f2f4; font-size: 0.85rem; }
+.health-label { color: #4a5568; font-weight: 600; }
+.health-value { color: #1c2530; text-align: right; }
+
+/* Final polish: consistent button sizing/spacing across the app */
+button, .demo-form button, .scenario-card button, .ack-button { font-family: inherit; }
+form { margin: 0; }
+.panel h2, .console-card h2 { margin-top: 0; }
+.panel + .panel { margin-top: 1.5rem; }
+
+
+/* =========================================================
+   CareFlow AI — responsive demo polish
+   UI-only changes for mobile readability and accessibility.
+   ========================================================= */
+
+/* Keep content comfortably readable on wide screens. */
+.app-main {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* Improve touch targets and form consistency. */
+button,
+input,
+select {
+  min-height: 44px;
+}
+
+.demo-form input,
+.demo-form select,
+.demo-form-inline input,
+.demo-form-inline select {
+  box-sizing: border-box;
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+}
+
+.demo-form button,
+.demo-form-inline button,
+.scenario-card button,
+.ack-button {
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  font-size: 0.9rem;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* Strong keyboard focus treatment. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #2b6cb0;
+  outline-offset: 2px;
+}
+
+/* Slightly stronger secondary-text contrast. */
+.muted,
+.timeline-time {
+  color: #667085;
+}
+
+/* Long values and transcripts should always wrap safely. */
+.summary-table td,
+.timeline-desc,
+.transcript,
+.health-value,
+.mini-row {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.transcript {
+  max-width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+/* Prevent ordinary tables from forcing the page wider on small screens. */
+.panel {
+  overflow-x: auto;
+}
+
+/* Mobile-first refinement for judge-facing pages. */
+@media (max-width: 700px) {
+  .app-header {
+    padding: 1rem 1rem;
+  }
+
+  .app-main {
+    padding: 1rem;
+  }
+
+  .panel,
+  .console-card,
+  .scenario-card,
+  .kpi-card {
+    border-radius: 10px;
+  }
+
+  .panel {
+    padding: 1rem;
+  }
+
+  .kpi-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .kpi-card {
+    padding: 0.85rem 0.65rem;
+  }
+
+  .kpi-value {
+    font-size: 1.65rem;
+  }
+
+  .console-grid,
+  .scenario-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-forms {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .demo-form {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .demo-form-inline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .demo-form-inline input,
+  .demo-form-inline select,
+  .demo-form-inline button,
+  .ack-button {
+    width: 100%;
+  }
+
+  /* Convert Care Summary from a squeezed two-column table
+     into stacked label/value rows on mobile. */
+  .summary-table,
+  .summary-table tbody,
+  .summary-table tr,
+  .summary-table th,
+  .summary-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .summary-table tr {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e5e9ed;
+  }
+
+  .summary-table th,
+  .summary-table td {
+    border-bottom: 0;
+    padding: 0;
+  }
+
+  .summary-table th {
+    width: auto;
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #667085;
+  }
+
+  .summary-table td {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .timeline-item {
+    display: block;
+    padding: 0.65rem 0;
+  }
+
+  .timeline-time,
+  .timeline-title,
+  .timeline-desc {
+    display: block;
+  }
+
+  .timeline-time {
+    min-width: 0;
+    margin-bottom: 0.15rem;
+    font-size: 0.75rem;
+  }
+
+  .timeline-desc {
+    margin-top: 0.2rem;
+    line-height: 1.4;
+  }
+
+  .health-item {
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .health-value {
+    max-width: 60%;
+  }
+
+  table:not(.summary-table) {
+    min-width: 620px;
+  }
+}
+
+@media (max-width: 420px) {
+  .kpi-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .app-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+  }
+}
+
+
+/* =========================================================
+   CareFlow AI — clinical operations visual system
+   Judge-facing visual refinement. Presentation only.
+   ========================================================= */
+
+:root {
+  --cf-navy: #122235;
+  --cf-navy-soft: #1b3148;
+  --cf-blue: #2166a5;
+  --cf-blue-dark: #184f82;
+  --cf-teal: #168a83;
+  --cf-bg: #f5f7fa;
+  --cf-surface: #ffffff;
+  --cf-border: #e1e7ee;
+  --cf-text: #182230;
+  --cf-text-secondary: #566579;
+  --cf-danger: #c83b3b;
+  --cf-danger-soft: #fff1f1;
+  --cf-warning: #b76b12;
+  --cf-warning-soft: #fff7e8;
+  --cf-success: #247a52;
+  --cf-success-soft: #edf9f2;
+  --cf-shadow-sm: 0 2px 8px rgba(18, 34, 53, 0.06);
+  --cf-shadow-md: 0 8px 24px rgba(18, 34, 53, 0.08);
+}
+
+/* ---------- Page foundation ---------- */
+
+html {
+  background: var(--cf-bg);
+}
+
+body {
+  background: var(--cf-bg);
+  color: var(--cf-text);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  line-height: 1.5;
+}
+
+.app-header {
+  background:
+    linear-gradient(
+      120deg,
+      var(--cf-navy) 0%,
+      var(--cf-navy-soft) 72%,
+      #1c4859 100%
+    );
+  padding: 1.35rem 2rem;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.app-header h1 {
+  font-size: 1.55rem;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+}
+
+.subtitle {
+  color: #c4d0dc;
+  font-size: 0.84rem;
+  letter-spacing: 0.005em;
+}
+
+.app-main {
+  max-width: 1240px;
+  padding-top: 1.75rem;
+}
+
+/* ---------- General cards ---------- */
+
+.panel,
+.console-card,
+.kpi-card,
+.scenario-card {
+  border: 1px solid var(--cf-border);
+  box-shadow: var(--cf-shadow-sm);
+}
+
+.panel {
+  border-radius: 12px;
+  padding: 1.25rem 1.4rem;
+}
+
+.panel h2 {
+  color: var(--cf-text);
+  font-size: 1.15rem;
+  font-weight: 720;
+  letter-spacing: -0.015em;
+  margin-bottom: 1rem;
+}
+
+/* ---------- KPI area ---------- */
+
+.kpi-row {
+  gap: 0.9rem;
+  margin-bottom: 1.15rem;
+}
+
+.kpi-card {
+  position: relative;
+  min-height: 92px;
+  border-radius: 12px;
+  padding: 1rem 0.85rem 0.9rem;
+  overflow: hidden;
+  background: var(--cf-surface);
+}
+
+.kpi-card::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: #dbe4ec;
+}
+
+.kpi-card.kpi-warn::after {
+  background: var(--cf-warning);
+}
+
+.kpi-card.kpi-good::after {
+  background: var(--cf-success);
+}
+
+.kpi-value {
+  font-size: 2.05rem;
+  line-height: 1;
+  font-weight: 780;
+  letter-spacing: -0.04em;
+  color: var(--cf-navy);
+}
+
+.kpi-label {
+  color: var(--cf-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.25;
+  margin-top: 0.5rem;
+}
+
+/* ---------- Demo Mode CTA ---------- */
+
+.demo-mode-link {
+  margin: 0 0 1.35rem;
+}
+
+.demo-mode-link a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 0.7rem 1rem;
+  border-radius: 9px;
+  background: var(--cf-blue);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(33, 102, 165, 0.18);
+  transition:
+    background 120ms ease,
+    box-shadow 120ms ease,
+    transform 120ms ease;
+}
+
+.demo-mode-link a:hover {
+  text-decoration: none;
+  background: var(--cf-blue-dark);
+  box-shadow: 0 5px 14px rgba(33, 102, 165, 0.22);
+}
+
+.demo-mode-link a:active {
+  transform: translateY(1px);
+}
+
+/* ---------- Operations cards ---------- */
+
+.console-grid {
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.console-card {
+  border-radius: 12px;
+  border-top-width: 4px;
+  padding: 1.15rem 1.2rem;
+  background: var(--cf-surface);
+}
+
+.console-card h2 {
+  color: var(--cf-text-secondary);
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.055em;
+}
+
+.console-card .count {
+  color: var(--cf-navy);
+  font-size: 2rem;
+  line-height: 1.1;
+  margin: 0.15rem 0 0.75rem;
+}
+
+.console-card.attention {
+  border-top-color: var(--cf-danger);
+}
+
+.console-card.pending {
+  border-top-color: #d79a2b;
+}
+
+.console-card.escalations {
+  border-top-color: #d76b2c;
+}
+
+.console-card.completed-today {
+  border-top-color: var(--cf-success);
+}
+
+.mini-row {
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.mini-row a {
+  color: var(--cf-blue);
+  font-weight: 600;
+}
+
+/* ---------- Badges ---------- */
+
+.badge {
+  padding: 0.22rem 0.58rem;
+  font-size: 0.68rem;
+  line-height: 1.2;
+  letter-spacing: 0.025em;
+}
+
+.badge-high {
+  background: var(--cf-danger-soft);
+  color: #9f2929;
+}
+
+.badge-medium {
+  background: var(--cf-warning-soft);
+  color: #87500f;
+}
+
+.badge-low {
+  background: var(--cf-success-soft);
+  color: #236542;
+}
+
+.badge-neutral {
+  background: #edf1f5;
+  color: #4d5c6d;
+}
+
+/* ---------- Demo Controls ---------- */
+
+.demo-panel {
+  background: #f8fbfd;
+  border: 1px solid #d5e3ed;
+  border-left: 4px solid var(--cf-blue);
+}
+
+.demo-panel h2 {
+  margin-bottom: 1.15rem;
+}
+
+.demo-form h3 {
+  font-size: 0.94rem;
+  color: var(--cf-text);
+}
+
+.demo-form input,
+.demo-form select,
+.demo-form-inline input,
+.demo-form-inline select {
+  background: #fff;
+  color: var(--cf-text);
+  border: 1px solid #cbd5df;
+  border-radius: 7px;
+}
+
+.demo-form input:focus,
+.demo-form select:focus,
+.demo-form-inline input:focus,
+.demo-form-inline select:focus {
+  border-color: var(--cf-blue);
+}
+
+.demo-form button,
+.demo-form-inline button,
+.scenario-card button {
+  border-radius: 7px;
+  background: var(--cf-blue);
+  font-weight: 650;
+}
+
+.demo-form button:hover,
+.demo-form-inline button:hover,
+.scenario-card button:hover {
+  background: var(--cf-blue-dark);
+}
+
+/* ---------- Acknowledge action ---------- */
+
+.ack-button {
+  border-radius: 7px;
+  background: var(--cf-success);
+  font-weight: 700;
+}
+
+.ack-button:hover {
+  background: #1f6846;
+}
+
+/* ---------- Tables ---------- */
+
+table {
+  color: var(--cf-text);
+}
+
+th {
+  color: var(--cf-text-secondary);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+td {
+  color: #344054;
+}
+
+th,
+td {
+  border-bottom-color: #edf0f3;
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+}
+
+/* ---------- Timeline ---------- */
+
+.timeline-item {
+  padding: 0.6rem 0;
+}
+
+.timeline-time {
+  color: #697789;
+}
+
+.timeline-title {
+  color: var(--cf-text);
+  font-weight: 650;
+}
+
+.timeline-desc {
+  color: var(--cf-text-secondary);
+}
+
+/* ---------- System health ---------- */
+
+.health-panel {
+  border-top: 3px solid var(--cf-teal);
+}
+
+.health-label {
+  color: var(--cf-text-secondary);
+}
+
+.health-value {
+  font-weight: 550;
+}
+
+/* ---------- Transcript ---------- */
+
+.transcript {
+  background: #f6f8fa;
+  border: 1px solid var(--cf-border);
+  line-height: 1.55;
+}
+
+/* =========================================================
+   Responsive operations layout
+   900px breakpoint deliberately includes the Project Owner's
+   Android browser viewport used for demos.
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .app-header {
+    padding: 1.1rem 1.15rem;
+  }
+
+  .app-main {
+    padding: 1.15rem;
+  }
+
+  .kpi-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kpi-card {
+    min-height: 82px;
+  }
+
+  .console-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .demo-forms {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .demo-form {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .demo-mode-link a {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .app-header h1 {
+    font-size: 1.35rem;
+  }
+
+  .app-main {
+    padding: 0.85rem;
+  }
+
+  .kpi-row {
+    gap: 0.65rem;
+  }
+
+  .kpi-card {
+    min-height: 78px;
+    padding: 0.8rem 0.6rem;
+  }
+
+  .kpi-value {
+    font-size: 1.65rem;
+  }
+
+  .kpi-label {
+    font-size: 0.66rem;
+  }
+
+  .console-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .console-card {
+    padding: 1rem;
+  }
+
+  .panel {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .panel h2 {
+    font-size: 1.05rem;
+  }
+}
+
+
+/* =========================================================
+   CareFlow AI — mobile density refinement
+   Keeps the clinical visual system while reducing excessive
+   vertical scrolling on phone-sized viewports.
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  /* ---------- Page rhythm ---------- */
+
+  .app-header {
+    padding: 0.9rem 1rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .subtitle {
+    margin-top: 0.15rem;
+    font-size: 0.76rem;
+  }
+
+  .app-main {
+    padding: 0.75rem;
+  }
+
+  /* ---------- KPI cards ---------- */
+
+  .kpi-row {
+    gap: 0.55rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .kpi-card {
+    min-height: 66px;
+    padding: 0.7rem 0.45rem 0.65rem;
+    border-radius: 9px;
+  }
+
+  .kpi-card::after {
+    left: 24%;
+    right: 24%;
+    height: 2px;
+  }
+
+  .kpi-value {
+    font-size: 1.45rem;
+  }
+
+  .kpi-label {
+    margin-top: 0.35rem;
+    font-size: 0.61rem;
+    line-height: 1.15;
+  }
+
+  /* ---------- Primary demo action ---------- */
+
+  .demo-mode-link {
+    margin-bottom: 0.85rem;
+  }
+
+  .demo-mode-link a {
+    min-height: 42px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.82rem;
+    border-radius: 8px;
+  }
+
+  /* ---------- Operational cards ---------- */
+
+  .console-grid {
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+  }
+
+  .console-card {
+    padding: 0.8rem 0.9rem;
+    border-radius: 9px;
+  }
+
+  .console-card h2 {
+    font-size: 0.69rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .console-card .count {
+    font-size: 1.55rem;
+    margin: 0.1rem 0 0.35rem;
+  }
+
+  .mini-row {
+    padding: 0.35rem 0;
+    font-size: 0.78rem;
+  }
+
+  .badge {
+    padding: 0.18rem 0.48rem;
+    font-size: 0.62rem;
+  }
+
+  /* ---------- General panels ---------- */
+
+  .panel {
+    padding: 0.9rem;
+    border-radius: 9px;
+    margin-bottom: 0.8rem;
+  }
+
+  .panel h2 {
+    margin-bottom: 0.7rem;
+    font-size: 1rem;
+  }
+
+  /* ---------- Demo controls ---------- */
+
+  .demo-panel {
+    border-left-width: 3px;
+  }
+
+  .demo-form h3 {
+    margin: 0.45rem 0;
+    font-size: 0.88rem;
+  }
+
+  .demo-forms {
+    gap: 0.75rem;
+  }
+
+  .demo-form {
+    gap: 0.3rem;
+  }
+
+  .demo-form input,
+  .demo-form select,
+  .demo-form-inline input,
+  .demo-form-inline select {
+    min-height: 42px;
+    padding: 0.55rem 0.65rem;
+    font-size: 0.88rem;
+  }
+
+  .demo-form button,
+  .demo-form-inline button,
+  .scenario-card button,
+  .ack-button {
+    min-height: 42px;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.84rem;
+  }
+
+  /* ---------- Ordinary tables ---------- */
+
+  table:not(.summary-table) {
+    min-width: 540px;
+  }
+
+  th,
+  td {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  /* ---------- Recent activity ---------- */
+
+  .timeline-item {
+    padding: 0.48rem 0;
+  }
+
+  .timeline-time {
+    font-size: 0.68rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .timeline-title {
+    font-size: 0.82rem;
+    line-height: 1.3;
+  }
+
+  .timeline-desc {
+    margin-top: 0.12rem;
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  /* ---------- System health ---------- */
+
+  .health-grid {
+    gap: 0;
+  }
+
+  .health-item {
+    padding: 0.5rem 0;
+    font-size: 0.8rem;
+  }
+
+  .health-label {
+    max-width: 48%;
+  }
+
+  .health-value {
+    max-width: 52%;
+    font-size: 0.78rem;
+  }
+}
+
+
+/* =========================================================
+   CareFlow AI — command center redesign
+   Product identity + judge-facing information architecture.
+   Presentation only.
+   ========================================================= */
+
+.eyebrow {
+  display: inline-block;
+  color: #527088;
+  font-size: 0.66rem;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.command-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(240px, 0.72fr);
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding: 1.65rem 1.75rem;
+  overflow: hidden;
+  border: 1px solid #cbdde8;
+  border-radius: 16px;
+  background:
+    radial-gradient(
+      circle at 92% 10%,
+      rgba(22, 138, 131, 0.11),
+      transparent 29%
+    ),
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f6fafc 100%
+    );
+  box-shadow: var(--cf-shadow-md);
+}
+
+.command-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(
+    180deg,
+    var(--cf-blue),
+    var(--cf-teal)
+  );
+}
+
+.command-hero-copy h2 {
+  max-width: 760px;
+  margin: 0.5rem 0 0.65rem;
+  color: var(--cf-navy);
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+}
+
+.command-hero-copy > p {
+  max-width: 720px;
+  margin: 0;
+  color: var(--cf-text-secondary);
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1rem;
+  align-items: center;
+  margin-top: 1rem;
+  color: #657487;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.hero-status {
+  display: inline-flex;
+  gap: 0.45rem;
+  align-items: center;
+  color: #24704c;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+  background: #2d9966;
+  box-shadow: 0 0 0 4px rgba(45, 153, 102, 0.11);
+}
+
+.command-hero-action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.primary-demo-cta {
+  display: flex;
+  width: 100%;
+  max-width: 300px;
+  min-height: 82px;
+  box-sizing: border-box;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 1rem 1.15rem;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    #2166a5,
+    #168a83
+  );
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(33, 102, 165, 0.22);
+}
+
+.primary-demo-cta:hover {
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.cta-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+}
+
+.primary-demo-cta strong,
+.primary-demo-cta small {
+  display: block;
+}
+
+.primary-demo-cta strong {
+  font-size: 1rem;
+}
+
+.primary-demo-cta small {
+  margin-top: 0.18rem;
+  color: rgba(255,255,255,0.80);
+  font-size: 0.72rem;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1.2rem 0 0.75rem;
+}
+
+.section-heading h2 {
+  margin: 0.3rem 0 0;
+  color: var(--cf-navy);
+  font-size: 1.16rem;
+  letter-spacing: -0.02em;
+}
+
+.section-caption {
+  color: var(--cf-text-secondary);
+  font-size: 0.76rem;
+}
+
+/* Give operational panels a little more identity. */
+.console-card {
+  position: relative;
+}
+
+.console-card::after {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.console-card.attention::after {
+  background: var(--cf-danger);
+}
+
+.console-card.pending::after {
+  background: #d79a2b;
+}
+
+.console-card.escalations::after {
+  background: #d76b2c;
+}
+
+.console-card.completed-today::after {
+  background: var(--cf-success);
+}
+
+/* ---------- Advanced controls ---------- */
+
+.advanced-controls {
+  padding: 0;
+  overflow: hidden;
+}
+
+.advanced-controls > summary {
+  display: flex;
+  min-height: 64px;
+  box-sizing: border-box;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.15rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.advanced-controls > summary::-webkit-details-marker {
+  display: none;
+}
+
+.advanced-controls > summary strong,
+.advanced-controls > summary small {
+  display: block;
+}
+
+.advanced-controls > summary strong {
+  color: var(--cf-navy);
+  font-size: 0.95rem;
+}
+
+.advanced-controls > summary small {
+  margin-top: 0.15rem;
+  color: var(--cf-text-secondary);
+  font-size: 0.71rem;
+  font-weight: 500;
+}
+
+.advanced-controls > summary::after {
+  content: "+";
+  display: grid;
+  order: 3;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  margin-left: 0.3rem;
+  border-radius: 8px;
+  background: #eaf2f8;
+  color: var(--cf-blue);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.advanced-controls[open] > summary::after {
+  content: "−";
+}
+
+.provider-chip {
+  margin-left: auto;
+  padding: 0.27rem 0.6rem;
+  border-radius: 999px;
+  background: #edf4f8;
+  color: #456277;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.advanced-controls[open] > summary {
+  border-bottom: 1px solid var(--cf-border);
+}
+
+.advanced-controls .demo-forms {
+  padding: 1rem 1.15rem 0;
+}
+
+.advanced-help {
+  padding: 0 1.15rem 1rem;
+}
+
+/* ---------- Activity becomes an operations feed ---------- */
+
+.panel:has(.timeline) .timeline {
+  max-height: 520px;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+  scrollbar-width: thin;
+}
+
+.panel:has(.timeline) .timeline::-webkit-scrollbar {
+  width: 6px;
+}
+
+.panel:has(.timeline) .timeline::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #c5d0da;
+}
+
+/* =========================================================
+   Phone layout
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .command-hero {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.15rem 1.1rem 1.2rem;
+    border-radius: 12px;
+  }
+
+  .command-hero-copy h2 {
+    margin-top: 0.45rem;
+    font-size: 1.34rem;
+    line-height: 1.2;
+  }
+
+  .command-hero-copy > p {
+    font-size: 0.84rem;
+    line-height: 1.48;
+  }
+
+  .hero-meta {
+    font-size: 0.69rem;
+  }
+
+  .command-hero-action {
+    justify-content: stretch;
+  }
+
+  .primary-demo-cta {
+    max-width: none;
+    min-height: 68px;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    margin: 1rem 0 0.65rem;
+  }
+
+  .section-heading h2 {
+    font-size: 1.04rem;
+  }
+
+  .section-caption {
+    display: none;
+  }
+
+  /* Mobile operations: two compact cards per row. */
+  .console-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .console-card {
+    min-width: 0;
+  }
+
+  .console-card.completed-today {
+    grid-column: 1 / -1;
+  }
+
+  .provider-chip {
+    display: none;
+  }
+
+  .advanced-controls > summary {
+    min-height: 58px;
+    padding: 0.85rem;
+  }
+
+  .advanced-controls .demo-forms {
+    padding: 0.85rem 0.85rem 0;
+  }
+
+  .advanced-help {
+    padding: 0 0.85rem 0.85rem;
+  }
+
+  /* Mobile patient cards instead of horizontal table. */
+  .patient-table,
+  .patient-table tbody,
+  .patient-table tr,
+  .patient-table td {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .patient-table thead {
+    display: none;
+  }
+
+  .patient-table tr {
+    margin-bottom: 0.65rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid #e4e9ee;
+    border-radius: 9px;
+    background: #fbfcfd;
+  }
+
+  .patient-table td {
+    display: grid;
+    grid-template-columns: 105px minmax(0, 1fr);
+    gap: 0.55rem;
+    padding: 0.27rem 0;
+    border: 0;
+    font-size: 0.78rem;
+    overflow-wrap: anywhere;
+  }
+
+  .patient-table td::before {
+    color: #697789;
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .patient-table td:nth-child(1)::before {
+    content: "Patient";
+  }
+
+  .patient-table td:nth-child(2)::before {
+    content: "Synthetic MRN";
+  }
+
+  .patient-table td:nth-child(3)::before {
+    content: "Phone";
+  }
+
+  .patient-table td:nth-child(4)::before {
+    content: "Discharges";
+  }
+
+  .panel:has(.timeline) .timeline {
+    max-height: 430px;
+  }
+}
+
+@media (max-width: 430px) {
+
+  .console-grid {
+    gap: 0.55rem;
+  }
+
+  .console-card {
+    padding: 0.72rem;
+  }
+
+  .console-card h2 {
+    font-size: 0.62rem;
+  }
+
+  .console-card .count {
+    font-size: 1.3rem;
+  }
+
+  .patient-table td {
+    grid-template-columns: 92px minmax(0, 1fr);
+  }
+}
+
+
+/* =========================================================
+   CareFlow AI — professional dashboard composition
+   Final dashboard hierarchy and product-level polish.
+   Presentation only.
+   ========================================================= */
+
+/* ---------- Dashboard section rhythm ---------- */
+
+.kpi-section-heading {
+  margin-top: 1.45rem;
+}
+
+.kpi-section-heading h2 {
+  font-size: 1.1rem;
+}
+
+.kpi-row {
+  margin-bottom: 1.65rem;
+}
+
+/* ---------- KPI semantic hierarchy ---------- */
+
+.kpi-card {
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    border-color 140ms ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(18, 34, 53, 0.10);
+}
+
+.kpi-card.kpi-danger .kpi-value {
+  color: #b83232;
+}
+
+.kpi-card.kpi-danger::after {
+  background: #cf3f3f;
+}
+
+.kpi-card.kpi-escalation .kpi-value {
+  color: #c56a16;
+}
+
+.kpi-card.kpi-escalation::after {
+  background: #d97924;
+}
+
+/* ---------- Hero refinements ---------- */
+
+.command-hero {
+  margin-top: 0.2rem;
+}
+
+.command-hero-copy h2 {
+  max-width: 700px;
+}
+
+.command-hero-copy > p {
+  max-width: 690px;
+}
+
+.command-hero .eyebrow {
+  color: #3f7086;
+}
+
+/* ---------- Operational overview ---------- */
+
+.section-heading:not(.kpi-section-heading) {
+  padding-top: 0.15rem;
+}
+
+.console-card {
+  min-height: 132px;
+}
+
+.console-card .muted {
+  line-height: 1.35;
+}
+
+/* ---------- Registry ---------- */
+
+.patient-table tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ---------- Activity feed ---------- */
+
+.activity-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.activity-heading h2 {
+  margin: 0.28rem 0 0;
+}
+
+.activity-caption {
+  color: var(--cf-text-secondary);
+  font-size: 0.73rem;
+}
+
+.panel:has(.timeline) {
+  border-top: 3px solid #5b7fa0;
+}
+
+.panel:has(.timeline) .timeline-item {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.panel:has(.timeline) .timeline-item::before {
+  content: "";
+  position: absolute;
+  top: 0.85rem;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #94a8bb;
+}
+
+.panel:has(.timeline) .timeline-title {
+  font-weight: 700;
+}
+
+/* ---------- System Health refinement ---------- */
+
+.health-panel {
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fbfefd 100%
+    );
+}
+
+/* =========================================================
+   Mobile professional composition
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .command-hero {
+    margin-bottom: 1rem;
+  }
+
+  .kpi-section-heading {
+    margin-top: 0.95rem;
+  }
+
+  .kpi-row {
+    margin-bottom: 1rem;
+  }
+
+  /* Purposeful 2 + 2 + full-width final KPI layout. */
+  .kpi-card:last-child {
+    grid-column: 1 / -1;
+    min-height: 60px;
+  }
+
+  .kpi-card:last-child .kpi-value,
+  .kpi-card:last-child .kpi-label {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .kpi-card:last-child .kpi-value {
+    margin-right: 0.6rem;
+  }
+
+  .console-card {
+    min-height: 116px;
+  }
+
+  .activity-heading {
+    align-items: flex-start;
+  }
+
+  .activity-caption {
+    display: none;
+  }
+
+  .panel:has(.timeline) .timeline-item {
+    padding-left: 0.85rem;
+  }
+}
+
+@media (max-width: 430px) {
+
+  .command-hero-copy h2 {
+    font-size: 1.24rem;
+  }
+
+  .command-hero-copy > p {
+    font-size: 0.8rem;
+  }
+
+  .kpi-section-heading h2 {
+    font-size: 1rem;
+  }
+}
+
+
+/* =========================================================
+   CareFlow AI — operational intelligence layer v2
+   Navigation + operational awareness.
+   Presentation only.
+   ========================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+.command-nav {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  margin: -0.4rem 0 1rem;
+  padding: 0.38rem;
+  overflow-x: auto;
+  border: 1px solid #dfe6ed;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 3px 12px rgba(18,34,53,0.045);
+  scrollbar-width: none;
+}
+
+.command-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.command-nav a {
+  display: inline-flex;
+  min-height: 38px;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  gap: 0.42rem;
+  align-items: center;
+  padding: 0.45rem 0.72rem;
+  border-radius: 8px;
+  color: #526579;
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.command-nav a:hover {
+  color: var(--cf-blue);
+  background: #edf5fa;
+  text-decoration: none;
+}
+
+.nav-symbol {
+  display: grid;
+  place-items: center;
+  min-width: 23px;
+  height: 23px;
+  border-radius: 6px;
+  background: #edf2f6;
+  color: #607589;
+  font-size: 0.57rem;
+  font-weight: 800;
+}
+
+.operational-signal {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.45rem;
+  padding: 1.1rem 1.2rem;
+  overflow: hidden;
+  border: 1px solid #dbe4eb;
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.98),
+      rgba(248,251,253,0.98)
+    );
+  box-shadow: 0 6px 18px rgba(18,34,53,0.055);
+}
+
+.signal-elevated {
+  border-left: 4px solid #d69827;
+}
+
+.signal-critical {
+  border-left: 4px solid #c83b3b;
+}
+
+.signal-stable {
+  border-left: 4px solid var(--cf-success);
+}
+
+.signal-icon-wrap {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #eff5f8;
+}
+
+.signal-icon {
+  width: 13px;
+  height: 13px;
+  border: 4px solid #8ea3b5;
+  border-radius: 50%;
+}
+
+.signal-elevated .signal-icon {
+  border-color: #d69827;
+}
+
+.signal-critical .signal-icon {
+  border-color: #c83b3b;
+}
+
+.signal-stable .signal-icon {
+  border-color: var(--cf-success);
+}
+
+.signal-copy h3 {
+  margin: 0.28rem 0 0.15rem;
+  color: var(--cf-navy);
+  font-size: 0.98rem;
+}
+
+.signal-copy p {
+  margin: 0;
+  color: var(--cf-text-secondary);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.signal-facts {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.signal-fact {
+  min-width: 78px;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #e2e8ed;
+  border-radius: 9px;
+  background: #fff;
+  text-align: center;
+}
+
+.signal-fact strong,
+.signal-fact span {
+  display: block;
+}
+
+.signal-fact strong {
+  color: var(--cf-navy);
+  font-size: 0.92rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.signal-fact span {
+  margin-top: 0.18rem;
+  color: #687689;
+  font-size: 0.59rem;
+  font-weight: 700;
+}
+
+#snapshot,
+#operations,
+#patients,
+#activity,
+#health {
+  scroll-margin-top: 1rem;
+}
+
+/* Mobile operational intelligence */
+
+@media (max-width: 700px) {
+
+  .command-nav {
+    margin-top: -0.25rem;
+    margin-bottom: 0.85rem;
+    padding: 0.3rem;
+  }
+
+  .command-nav a {
+    min-height: 36px;
+    padding: 0.4rem 0.55rem;
+    font-size: 0.67rem;
+  }
+
+  .nav-symbol {
+    min-width: 21px;
+    height: 21px;
+  }
+
+  .operational-signal {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .signal-icon-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+
+  .signal-copy h3 {
+    font-size: 0.9rem;
+  }
+
+  .signal-copy p {
+    font-size: 0.72rem;
+  }
+
+  .signal-facts {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .signal-fact {
+    min-width: 0;
+    padding: 0.45rem 0.25rem;
+  }
+
+  .signal-fact strong {
+    font-size: 0.82rem;
+  }
+
+  .signal-fact span {
+    font-size: 0.54rem;
+  }
+}
+
+
+/* =========================================================
+   CareFlow AI — mobile registry collapse
+   Keeps patient data accessible while reducing dashboard
+   scroll length on phone-sized screens.
+   ========================================================= */
+
+.registry-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.registry-summary {
+  display: flex;
+  align-items: center;
+  min-height: 72px;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.registry-summary::-webkit-details-marker {
+  display: none;
+}
+
+.registry-summary > span {
+  min-width: 0;
+}
+
+.registry-summary strong,
+.registry-summary small {
+  display: block;
+}
+
+.registry-summary strong {
+  margin-top: 0.3rem;
+  color: var(--cf-navy);
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.registry-summary small {
+  margin-top: 0.18rem;
+  color: var(--cf-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.registry-summary::after {
+  content: "−";
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  margin-left: auto;
+  border-radius: 8px;
+  background: #edf4f8;
+  color: var(--cf-blue);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.registry-panel:not([open]) .registry-summary::after {
+  content: "+";
+}
+
+.registry-content {
+  padding: 0 1.2rem 1.2rem;
+}
+
+.registry-panel[open] .registry-summary {
+  border-bottom: 1px solid var(--cf-border);
+}
+
+/* Desktop/tablet: registry remains open visually. */
+@media (min-width: 701px) {
+  .registry-panel {
+    display: block;
+  }
+
+  .registry-summary {
+    cursor: default;
+  }
+
+  .registry-summary::after {
+    display: none;
+  }
+
+  .registry-content {
+    display: block !important;
+  }
+}
+
+/* Mobile: compact by default, expandable on demand. */
+@media (max-width: 700px) {
+  .registry-summary {
+    min-height: 64px;
+    padding: 0.85rem;
+  }
+
+  .registry-summary strong {
+    font-size: 1rem;
+  }
+
+  .registry-content {
+    padding: 0 0.85rem 0.85rem;
+  }
+
+  .registry-panel:not([open]) .registry-content {
+    display: none;
+  }
+}
+
+/* =========================================================
+   CareFlow AI — clinical action call detail
+   Judge-facing risk, escalation, summary and evidence view.
+   Presentation only.
+   ========================================================= */
+
+.detail-back-link {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: var(--cf-blue);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.detail-back-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Case identity ---------- */
+
+.detail-context-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1.2rem 1.35rem;
+  border: 1px solid var(--cf-border);
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: var(--cf-shadow-sm);
+}
+
+.detail-context-card h1 {
+  margin: 0.28rem 0 0.25rem;
+  color: var(--cf-navy);
+  font-size: 1.45rem;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.detail-context-card p {
+  margin: 0;
+  color: var(--cf-text-secondary);
+  font-size: 0.82rem;
+}
+
+.context-divider {
+  margin: 0 0.35rem;
+}
+
+.call-status-pill {
+  min-width: 120px;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #dce4eb;
+  border-radius: 10px;
+  background: #f8fafc;
+  text-align: center;
+}
+
+.call-status-pill span,
+.call-status-pill strong {
+  display: block;
+}
+
+.call-status-pill span {
+  color: #748295;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.call-status-pill strong {
+  margin-top: 0.18rem;
+  color: var(--cf-navy);
+  font-size: 0.82rem;
+}
+
+/* ---------- Risk hero ---------- */
+
+.risk-hero {
+  position: relative;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--cf-border);
+  border-radius: 15px;
+  box-shadow: var(--cf-shadow-md);
+}
+
+.risk-hero-high {
+  border-color: #efc8c8;
+  background:
+    radial-gradient(circle at 95% 10%, rgba(200,59,59,0.09), transparent 30%),
+    linear-gradient(135deg, #fffafa 0%, #ffffff 65%);
+}
+
+.risk-hero-medium {
+  border-color: #ecd6ad;
+  background:
+    linear-gradient(135deg, #fffdf7 0%, #ffffff 70%);
+}
+
+.risk-hero-low {
+  border-color: #c7dfd1;
+  background:
+    linear-gradient(135deg, #f9fefa 0%, #ffffff 70%);
+}
+
+.risk-hero-neutral {
+  background: #fff;
+}
+
+.risk-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+}
+
+.risk-hero-high::before {
+  background: var(--cf-danger);
+}
+
+.risk-hero-medium::before {
+  background: #d69827;
+}
+
+.risk-hero-low::before {
+  background: var(--cf-success);
+}
+
+.risk-hero-neutral::before {
+  background: #8797a8;
+}
+
+.risk-hero-main {
+  padding: 1.35rem 1.45rem;
+}
+
+.risk-label-row {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.risk-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.risk-hero-high .risk-indicator {
+  background: var(--cf-danger);
+  box-shadow: 0 0 0 5px rgba(200,59,59,0.11);
+}
+
+.risk-hero-medium .risk-indicator {
+  background: #d69827;
+  box-shadow: 0 0 0 5px rgba(214,152,39,0.11);
+}
+
+.risk-hero-low .risk-indicator {
+  background: var(--cf-success);
+  box-shadow: 0 0 0 5px rgba(36,122,82,0.11);
+}
+
+.risk-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-top: 0.75rem;
+}
+
+.risk-title-row h2 {
+  margin: 0;
+  color: var(--cf-navy);
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.risk-hero-high .risk-title-row h2 {
+  color: #a92d2d;
+}
+
+.risk-title-row p {
+  margin: 0.4rem 0 0;
+  color: var(--cf-text-secondary);
+  font-size: 0.8rem;
+}
+
+.risk-score-card {
+  min-width: 105px;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.8);
+  text-align: center;
+}
+
+.risk-score-card span,
+.risk-score-card strong {
+  display: block;
+}
+
+.risk-score-card span {
+  color: #788697;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.risk-score-card strong {
+  margin-top: 0.15rem;
+  color: var(--cf-navy);
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.risk-next-action {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.78);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.action-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #6d7988;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.risk-next-action strong {
+  color: var(--cf-text);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+/* ---------- Shared detail headings ---------- */
+
+.detail-section-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.detail-section-heading h2 {
+  margin: 0.3rem 0 0;
+}
+
+.detail-caption,
+.summary-method {
+  color: #718093;
+  font-size: 0.7rem;
+  font-weight: 650;
+}
+
+.detail-supporting-copy {
+  color: var(--cf-text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+/* ---------- Escalation ---------- */
+
+.escalation-card {
+  margin-bottom: 1rem;
+  padding: 1.2rem 1.3rem;
+  border-radius: 13px;
+  box-shadow: var(--cf-shadow-sm);
+}
+
+.escalation-active {
+  border: 1px solid #efc7c7;
+  border-left: 5px solid var(--cf-danger);
+  background: #fffafa;
+}
+
+.escalation-acknowledged {
+  border: 1px solid #cbe0d3;
+  border-left: 5px solid var(--cf-success);
+  background: #fbfefc;
+}
+
+.escalation-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.escalation-top h2 {
+  margin: 0.28rem 0 0;
+  color: var(--cf-navy);
+  font-size: 1.15rem;
+}
+
+.escalation-status {
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--cf-text);
+  font-size: 0.66rem;
+  font-weight: 800;
+}
+
+.escalation-action {
+  margin: 0.8rem 0;
+  color: var(--cf-text-secondary);
+  font-size: 0.8rem;
+}
+
+.acknowledgement-box {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(280px, 1.2fr);
+  gap: 1rem;
+  align-items: center;
+  margin-top: 0.8rem;
+  padding: 0.9rem;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #efd7d7;
+}
+
+.acknowledgement-box strong,
+.acknowledgement-box span {
+  display: block;
+}
+
+.acknowledgement-box strong {
+  color: var(--cf-navy);
+  font-size: 0.82rem;
+}
+
+.acknowledgement-box span {
+  margin-top: 0.15rem;
+  color: var(--cf-text-secondary);
+  font-size: 0.7rem;
+}
+
+.acknowledgement-form {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.acknowledgement-form input {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #ccd6df;
+  border-radius: 7px;
+  font: inherit;
+}
+
+.acknowledged-box {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.8rem;
+  padding: 0.85rem 0.9rem;
+  border: 1px solid #d5e6dc;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.ack-check {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 50%;
+  background: var(--cf-success-soft);
+  color: var(--cf-success);
+  font-weight: 900;
+}
+
+.acknowledged-box strong {
+  color: #246544;
+  font-size: 0.82rem;
+}
+
+.acknowledged-box p {
+  margin: 0.15rem 0 0;
+  color: var(--cf-text-secondary);
+  font-size: 0.72rem;
+}
+
+/* ---------- Structured summary ---------- */
+
+.care-summary-panel {
+  border-top: 4px solid var(--cf-blue);
+}
+
+.summary-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+
+.summary-stat {
+  padding: 0.75rem;
+  border: 1px solid #e1e7ed;
+  border-radius: 9px;
+  background: #fafcfd;
+}
+
+.summary-stat span,
+.summary-stat strong {
+  display: block;
+}
+
+.summary-stat span {
+  color: #758396;
+  font-size: 0.61rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.summary-stat strong {
+  margin-top: 0.25rem;
+  color: var(--cf-navy);
+  font-size: 0.88rem;
+}
+
+.summary-section {
+  margin-top: 1rem;
+}
+
+.summary-section-label {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: #647589;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+}
+
+.symptom-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.symptom-chip {
+  padding: 0.38rem 0.62rem;
+  border: 1px solid #ead4d4;
+  border-radius: 999px;
+  background: #fff7f7;
+  color: #8e3636;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.symptom-chip-neutral {
+  border-color: #dfe5ea;
+  background: #f7f9fb;
+  color: #617083;
+}
+
+.risk-reason-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.risk-reason-list li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #edf0f3;
+  color: #3d4c5d;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.reason-marker {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  margin-top: 0.35rem;
+  border-radius: 50%;
+  background: #c94a4a;
+}
+
+.next-action-card {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #cbdce8;
+  border-left: 4px solid var(--cf-blue);
+  border-radius: 9px;
+  background: #f6fbfd;
+}
+
+.next-action-card span,
+.next-action-card strong {
+  display: block;
+}
+
+.next-action-card span {
+  color: #547189;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.next-action-card strong {
+  margin-top: 0.3rem;
+  color: var(--cf-navy);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.summary-details {
+  margin-top: 1rem;
+  border-top: 1px solid #e7ebef;
+}
+
+.summary-details summary {
+  padding: 0.8rem 0 0;
+  cursor: pointer;
+  color: var(--cf-blue);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+/* ---------- Case timeline ---------- */
+
+.detail-timeline-panel {
+  border-top: 4px solid #6285a2;
+}
+
+.case-timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.case-timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 18px minmax(0,1fr);
+  gap: 0.7rem;
+}
+
+.case-timeline-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 17px;
+  bottom: -3px;
+  width: 2px;
+  background: #e2e8ed;
+}
+
+.case-timeline-marker {
+  position: relative;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  margin-top: 0.5rem;
+  border: 3px solid #dbe5ec;
+  border-radius: 50%;
+  background: #6d8da7;
+}
+
+.case-timeline-content {
+  padding: 0.35rem 0 0.85rem;
+}
+
+.case-timeline-time {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: #8290a0;
+  font-size: 0.65rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.case-timeline-content strong {
+  color: var(--cf-text);
+  font-size: 0.8rem;
+}
+
+.case-timeline-content p {
+  margin: 0.2rem 0 0;
+  color: var(--cf-text-secondary);
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
+/* ---------- Transcript evidence ---------- */
+
+.transcript-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.transcript-summary {
+  display: flex;
+  align-items: center;
+  min-height: 70px;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.transcript-summary::-webkit-details-marker {
+  display: none;
+}
+
+.transcript-summary strong,
+.transcript-summary small {
+  display: block;
+}
+
+.transcript-summary strong {
+  margin-top: 0.28rem;
+  color: var(--cf-navy);
+  font-size: 1rem;
+}
+
+.transcript-summary small {
+  margin-top: 0.15rem;
+  color: var(--cf-text-secondary);
+  font-size: 0.7rem;
+}
+
+.transcript-summary::after {
+  content: "+";
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-left: auto;
+  border-radius: 8px;
+  background: #edf4f8;
+  color: var(--cf-blue);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.transcript-panel[open] .transcript-summary::after {
+  content: "−";
+}
+
+.transcript-content {
+  padding: 0 1rem 1rem;
+  border-top: 1px solid var(--cf-border);
+}
+
+/* ---------- Mobile clinical action view ---------- */
+
+@media (max-width: 700px) {
+
+  .detail-context-card {
+    align-items: flex-start;
+    padding: 0.95rem;
+  }
+
+  .detail-context-card h1 {
+    font-size: 1.2rem;
+  }
+
+  .call-status-pill {
+    min-width: 86px;
+    padding: 0.5rem;
+  }
+
+  .risk-hero-main {
+    padding: 1rem;
+  }
+
+  .risk-title-row {
+    align-items: center;
+  }
+
+  .risk-title-row h2 {
+    font-size: 1.65rem;
+  }
+
+  .risk-score-card {
+    min-width: 78px;
+    padding: 0.55rem;
+  }
+
+  .risk-score-card strong {
+    font-size: 1.3rem;
+  }
+
+  .escalation-card {
+    padding: 1rem;
+  }
+
+  .acknowledgement-box {
+    grid-template-columns: 1fr;
+  }
+
+  .acknowledgement-form {
+    flex-direction: column;
+  }
+
+  .acknowledgement-form input,
+  .acknowledgement-form .ack-button {
+    width: 100%;
+  }
+
+  .summary-overview-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .summary-stat:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .detail-section-heading {
+    align-items: flex-start;
+  }
+
+  .summary-method,
+  .detail-caption {
+    text-align: right;
+    max-width: 42%;
+  }
+
+  .case-timeline-content strong {
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 430px) {
+
+  .detail-context-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
+  .risk-title-row h2 {
+    font-size: 1.45rem;
+  }
+
+  .risk-next-action strong {
+    font-size: 0.82rem;
+  }
+
+  .symptom-chip {
+    font-size: 0.68rem;
+  }
+}
+
+
+/* =========================================================
+   CareFlow AI — final high-risk presentation polish
+   Final judge-facing density and emphasis refinement.
+   Presentation only.
+   ========================================================= */
+
+.demo-delivery-note {
+  color: #637487;
+  font-style: normal;
+}
+
+/* Keep the urgent action visually tied to the risk result. */
+.risk-hero-high .risk-next-action {
+  border-left: 4px solid var(--cf-danger);
+  background: rgba(255,255,255,0.92);
+}
+
+.risk-hero-high .risk-next-action .action-label {
+  color: #9b3838;
+}
+
+.risk-hero-high .risk-score-card {
+  border-color: #efd1d1;
+  background: #fff;
+}
+
+.risk-hero-high .risk-score-card strong {
+  color: #a92d2d;
+}
+
+/* Slightly tighter vertical rhythm. */
+.care-summary-panel,
+.detail-timeline-panel {
+  margin-bottom: 1rem;
+}
+
+.summary-section {
+  margin-top: 0.85rem;
+}
+
+.risk-reason-list li {
+  padding: 0.43rem 0;
+}
+
+.case-timeline-content {
+  padding-bottom: 0.72rem;
+}
+
+.next-action-card {
+  margin-top: 0.85rem;
+}
+
+.summary-details {
+  margin-top: 0.85rem;
+}
+
+/* Make acknowledged state read as completed human review. */
+.escalation-acknowledged .escalation-status {
+  background: var(--cf-success-soft);
+  color: #236542;
+}
+
+.escalation-active .escalation-status {
+  background: var(--cf-danger-soft);
+  color: #982f2f;
+}
+
+/* Transcript remains available evidence without dominating
+   the judge-facing path. */
+.transcript-panel {
+  border-top: 3px solid #8ba2b6;
+}
+
+@media (max-width: 700px) {
+
+  .detail-back-link {
+    margin-bottom: 0.75rem;
+  }
+
+  .detail-context-card,
+  .risk-hero,
+  .escalation-card {
+    margin-bottom: 0.8rem;
+  }
+
+  .risk-hero-main {
+    padding: 0.9rem;
+  }
+
+  .risk-title-row {
+    margin-top: 0.6rem;
+  }
+
+  .risk-next-action {
+    margin-top: 0.75rem;
+    padding: 0.75rem 0.8rem;
+  }
+
+  .care-summary-panel {
+    padding: 0.9rem;
+  }
+
+  .summary-overview-grid {
+    gap: 0.55rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .summary-stat {
+    padding: 0.65rem;
+  }
+
+  .symptom-chips {
+    gap: 0.35rem;
+  }
+
+  .symptom-chip {
+    padding: 0.32rem 0.52rem;
+  }
+
+  .detail-timeline-panel {
+    padding: 0.9rem;
+  }
+
+  .detail-section-heading {
+    margin-bottom: 0.75rem;
+  }
+
+  .case-timeline-content {
+    padding-bottom: 0.62rem;
+  }
+}
