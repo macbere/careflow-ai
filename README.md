@@ -5,11 +5,23 @@ CareFlow AI is a post-discharge care-coordination prototype built for the
 preserves uncertain answers, applies an explainable risk rubric, and creates a human-review
 workflow when evidence is concerning or unusable.
 
+**Live judge demo:** https://careflowai.pythonanywhere.com  
+**Health check:** https://careflowai.pythonanywhere.com/health
+
 > **Synthetic data only.** This hackathon prototype is not HIPAA-reviewed and must not be
 > connected to real Protected Health Information. It has no production authentication, RBAC,
 > multi-tenancy, EHR integration, or compliance claim.
 
 ## Three-minute judge path
+
+### Fastest path — hosted demo
+
+Open **https://careflowai.pythonanywhere.com** and select **Run Demo Mode**, then run the
+**High Risk** scenario. The public deployment is configured for the deterministic mock provider,
+so judges do not need a CALL-E account, API key, phone number, or provider credits and no real
+phone call is placed from Demo Mode.
+
+### Local path
 
 No CALL-E account, API key, phone number, or credits are required.
 
