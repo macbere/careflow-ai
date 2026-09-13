@@ -3,7 +3,18 @@
 CareFlow AI can be evaluated end to end in mock mode without a CALL-E account, API key,
 phone number, or credits.
 
-## Run the product
+## Fastest path — hosted demo
+
+Open **https://careflowai.pythonanywhere.com** and select **Run Demo Mode**, then run the
+**High Risk** scenario.
+
+The hosted judge demo is configured with the deterministic mock provider. It uses synthetic data,
+places no real phone call, requires no CALL-E credentials, and exercises the same downstream
+CareFlow orchestration used after trusted provider resolution.
+
+Health check: **https://careflowai.pythonanywhere.com/health**
+
+## Run the product locally
 
 ```bash
 git clone https://github.com/macbere/careflow-ai.git
@@ -77,7 +88,7 @@ call → structured result → deterministic rubric → downstream action.
 
 ## Important boundaries
 
-- Demo Mode is mock-based; it is not presented as live-call evidence.
+- The hosted judge demo and local Demo Mode are mock-based; neither is presented as live-call evidence.
 - A separate consenting Nigerian-destination attempt was rejected before dialing with HTTP 422
   `call_not_ready`; CALL-E stated that Nigeria in English was not currently supported.
 - Actual public inbound webhook delivery has not been directly observed; authenticated
