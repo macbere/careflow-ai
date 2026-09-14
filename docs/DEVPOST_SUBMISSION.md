@@ -1,7 +1,20 @@
 # Devpost Submission Package
 
-Paste-ready draft for **CALL-E: Your Code Is Calling**. Owner-supplied links and account
-details remain explicitly marked; no values are invented here.
+Finalized submission package and status record for **CALL-E: Your Code Is Calling**.
+Public judge-facing links are included here; private account details such as the CALL-E account
+email remain on the Devpost form and are intentionally not duplicated in this public repository.
+
+## Final submission status
+
+- [x] Devpost project published and submitted: https://devpost.com/software/careflow-ai-8z1p0u
+- [x] Public judge demo live: https://careflowai.pythonanywhere.com
+- [x] Health check live: https://careflowai.pythonanywhere.com/health
+- [x] Public demo video published: https://youtu.be/zMXSo5HUZ3o
+- [x] CALL-E community contribution merged upstream in [PR #268](https://github.com/CALLE-AI/awesome-phone-call-agents/pull/268)
+- [x] Selected screenshots uploaded to the Devpost project gallery
+- [x] CALL-E account email entered privately on the required Devpost field
+- [x] CALL-E Feedback Survey submitted and additional feedback shared on Discord
+- [x] Functional application frozen; this document update changes submission documentation only
 
 ## Tagline
 
@@ -61,6 +74,7 @@ concurrent exactly-once behavior.
 - Standalone `structured-outcome-followup-call` Agent Skill, merged into CALL-E's official
   community repository in
   [PR #268](https://github.com/CALLE-AI/awesome-phone-call-agents/pull/268).
+- Public judge-facing Demo Mode at https://careflowai.pythonanywhere.com.
 
 ## Demo Mode and notification boundaries
 
@@ -102,12 +116,12 @@ path.
 
 ### Final frozen-build validation
 
-On September 11, the verified frozen functional runtime successfully created
-a genuine CALL-E call to the official hackathon US testing hotline. Create Call returned HTTP
-**201**, the authenticated CallTask progressed from `queued` to `completed`,
-`task_completed=true`, and CALL-E returned a per-recipient structured result, transcript, and
-matching CareFlow correlation metadata. CALL-E task-completion confidence was high at **0.86**;
-this is provider completion confidence, not a clinical-risk score.
+On September 11, the verified frozen functional runtime successfully created a genuine CALL-E
+call to the official hackathon US testing hotline. Create Call returned HTTP **201**, the
+authenticated CallTask progressed from `queued` to `completed`, `task_completed=true`, and
+CALL-E returned a per-recipient structured result, transcript, and matching CareFlow correlation
+metadata. CALL-E task-completion confidence was high at **0.86**; this is provider completion
+confidence, not a clinical-risk score.
 
 All eight recovery answers from that hotline interaction were explicitly `unknown`. CareFlow
 retrieved the genuine terminal `call.completed` DeveloperEvent, authenticated and bound the
@@ -132,7 +146,18 @@ dialing with HTTP **422** `call_not_ready` because Nigeria in English was not cu
 supported. No provider call ID was created. This is a provider region/language availability
 boundary, not a CareFlow authentication or request-contract failure.
 
-## How to run
+## Judge access
+
+### Fastest path — hosted demo
+
+Open https://careflowai.pythonanywhere.com, select **Run Demo Mode**, and run the **High Risk**
+scenario. The public deployment is configured for deterministic mock-provider judging, so no
+CALL-E account, API key, phone number, or provider credits are required and no real phone call
+is placed from Demo Mode.
+
+Health check: https://careflowai.pythonanywhere.com/health
+
+### Local path
 
 ```bash
 git clone https://github.com/macbere/careflow-ai.git
@@ -148,36 +173,41 @@ python run.py
 Open `http://localhost:5000/dashboard` → **Open Demo Mode** → **Run High Risk**. See
 `docs/JUDGE_QUICKSTART.md` for Windows activation/copy commands and evidence pointers.
 
-## Screenshot checklist
+## Submitted screenshot/gallery checklist
 
-- [ ] Dashboard with operational priorities and five KPI cards
-- [ ] Demo Mode scenario picker, visibly labeled simulated/mock
-- [ ] High Risk call detail with reasons and recommended action
-- [ ] Escalation and acknowledgement controls
-- [ ] Care Summary and audit timeline
-- [ ] `needs_review` example showing no normal clinical artifacts
-- [ ] Sanitized two-layer live-evidence view with no phone numbers or private account data
-- [ ] Official merged PR #268
+- [x] Operational dashboard
+- [x] Explainable High Risk result
+- [x] Human escalation acknowledgement
+- [x] Generated Care Summary
+- [x] Chronological audit timeline
+- [x] Sanitized CALL-E contract / real-validation evidence
+- [x] Official merged PR #268
 
-## Video checklist
+## Final video checklist
 
-- [ ] Under 3:00; target 2:40–2:50
-- [ ] Clearly label Demo Mode as `MockVoiceClient`, not a live call
-- [ ] Show High Risk workflow and acknowledgement
-- [ ] Briefly show historical human validation as proof of real CALL-E conversation + structured extraction
-- [ ] Show the final frozen-build proof: HTTP 201 Create Call, completed CallTask, authenticated terminal event, metadata binding, safe `needs_review` routing, and no duplicate replay artifacts
-- [ ] Keep the two validation layers distinct and truthful
-- [ ] Do not make the recording depend on another live call
-- [ ] Show merged community PR #268
-- [ ] Do not expose `.env`, API keys, phone numbers, private account details, raw payloads, or full transcripts
+- [x] Final public video published on YouTube: https://youtu.be/zMXSo5HUZ3o
+- [x] Demo Mode clearly identified as deterministic/mock rather than another live call
+- [x] High Risk workflow and acknowledgement shown
+- [x] Historical human validation and final frozen-build validation kept distinct and truthful
+- [x] Recording does not depend on another live call
+- [x] Show merged community PR #268
+- [x] No `.env`, API keys, phone numbers, private account details, raw payloads, or full transcripts exposed
 
-## OWNER ACTIONS before submission
+## Owner actions — completed
 
-- [ ] OWNER ACTION: add the CALL-E account email required by the event form
-- [ ] OWNER ACTION: add and privately verify the final public video URL
-- [ ] OWNER ACTION: upload the selected screenshots
-- [ ] OWNER ACTION: add an optional deployment URL only if a safe public demo is available
-- [ ] OWNER ACTION: confirm the repository branch/commit submitted is the approved final state
+- [x] OWNER ACTION: CALL-E account email added to the required Devpost field; kept private and not duplicated here
+- [x] OWNER ACTION: final public video URL added and verified: https://youtu.be/zMXSo5HUZ3o
+- [x] OWNER ACTION: selected screenshots uploaded to the Devpost project gallery
+- [x] OWNER ACTION: public functional demo URL added: https://careflowai.pythonanywhere.com
+- [x] OWNER ACTION: repository final functional state confirmed; later documentation-only status updates do not change application logic
+- [x] OWNER ACTION: Devpost project published and submitted
+- [x] OWNER ACTION: CALL-E Feedback Survey submitted and additional feedback shared on Discord
+
+## Submission freeze
+
+CareFlow AI's functional application remains frozen for the hackathon submission. Documentation
+may be corrected to reflect verified submission reality, but no application-code or product-logic
+change is implied by this status record.
 
 Evidence details: [Live CALL-E Evidence](LIVE_CALLE_EVIDENCE.md).
 Current boundaries: [Current Verification Status](CURRENT_VERIFICATION_STATUS.md).
