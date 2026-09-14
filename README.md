@@ -1,7 +1,7 @@
 # CareFlow AI
 
 CareFlow AI is a post-discharge care-coordination prototype built for the
-**CALL-E — Your Code Is Calling** hackathon. It uses CALL-E for structured follow-up calls,
+**CALL-E: Your Code Is Calling** hackathon. It uses CALL-E for structured follow-up calls,
 preserves uncertain answers, applies an explainable risk rubric, and creates a human-review
 workflow when evidence is concerning or unusable.
 
