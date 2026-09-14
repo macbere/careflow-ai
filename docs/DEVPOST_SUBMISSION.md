@@ -1,6 +1,6 @@
 # Devpost Submission Package
 
-Paste-ready draft for **CALL-E — Your Code Is Calling**. Owner-supplied links and account
+Paste-ready draft for **CALL-E: Your Code Is Calling**. Owner-supplied links and account
 details remain explicitly marked; no values are invented here.
 
 ## Tagline
