@@ -82,12 +82,18 @@ rejected it before dialing with HTTP **422** and `call_not_ready`, reporting tha
 English was unsupported at the time. No provider call ID was created, no phone call occurred,
 and no retry was made. The response identified a destination/language restriction.
 
-## What remains to be tested
+## Next engineering steps
 
-- Actual public inbound webhook delivery, observed independently of local replay.
-- Concurrent processing guarantees beyond the sequential/retry cases already tested.
-- External notification delivery once a real adapter is implemented.
+- **Validation: public webhook delivery.** The handler has processed genuine provider data
+  through the local route. Verify CALL-E delivery to the public endpoint independently of
+  local replay.
+- **Validation: simultaneous events.** Sequential replay and retry handling have been tested.
+  Check what happens when copies of an event arrive at the same time, and address any duplicate
+  records or inconsistent results.
+- **Implementation and validation: external notifications.** The current adapter only logs
+  notification requests. Add an email, SMS, or other delivery adapter, then verify that messages
+  reach the intended recipient.
 
-For the application test status and deployment limits, see
+For the application test status, demo scope, and current limitations, see
 [verification status](CURRENT_VERIFICATION_STATUS.md). Future live tests are covered by the
 [validation checklist](LIVE_CALLE_VALIDATION_CHECKLIST.md).

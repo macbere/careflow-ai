@@ -29,12 +29,25 @@ Automated tests cover forged envelopes, identity and metadata mismatches, provid
 failures, nonterminal retries, result quality, conflicting terminal evidence, and sequential
 replay recovery. The [architecture](ARCHITECTURE.md) describes those paths.
 
-## Deployment limits
+## Demo scope and current limitations
 
-CareFlow uses synthetic data only. It is not HIPAA-reviewed and has no production
-authentication, role-based access, tenant isolation, EHR integration, or compliance claim.
-Recipient phone numbers, credentials, private account details, and raw transcripts are omitted
-from the public evidence documents.
+**Intended use.** CareFlow is a demonstration prototype for synthetic data. It is not intended
+for real patient information, is not HIPAA-reviewed, and makes no compliance claim.
 
-The submission's application behavior remains frozen. Editorial updates to documentation and
-comments do not change the application logic or extend the validation results above.
+**Production capabilities.** User authentication, staff permissions (role-based access),
+separation between organizations (tenant isolation), and connections to hospital record systems
+(EHR integration) are not implemented.
+
+**Public documentation privacy.** Credentials, recipient phone numbers, private account details,
+and raw transcripts are omitted from the public evidence documents. This describes what is
+published; it does not establish that the application is ready to handle real patient data.
+
+## Submission version record
+
+The September 11, 2026 submission build, preserved in the
+[initial public release](https://github.com/macbere/careflow-ai/commit/7a91a4dcbe812ca56b9a34a87cbaf5e46bff4557),
+is the baseline for the validation results on this page.
+
+A September 14, 2026 review confirmed that the current executable Python logic matches that
+baseline. Later application versions should record their own test results and live-validation
+evidence.
