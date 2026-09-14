@@ -38,16 +38,10 @@ for real patient information, is not HIPAA-reviewed, and makes no compliance cla
 separation between organizations (tenant isolation), and connections to hospital record systems
 (EHR integration) are not implemented.
 
-**Public documentation privacy.** Credentials, recipient phone numbers, private account details,
-and raw transcripts are omitted from the public evidence documents. This describes what is
-published; it does not establish that the application is ready to handle real patient data.
+**Public documentation privacy.** Credentials, recipient phone numbers, private account details, and raw transcripts are excluded from the public evidence documents.
 
-## Submission version record
+## Tested version
 
-The September 11, 2026 submission build, preserved in the
-[initial public release](https://github.com/macbere/careflow-ai/commit/7a91a4dcbe812ca56b9a34a87cbaf5e46bff4557),
-is the baseline for the validation results on this page.
+The validation results on this page relate to the [September 11, 2026 release](https://github.com/macbere/careflow-ai/commit/7a91a4dcbe812ca56b9a34a87cbaf5e46bff4557).
 
-A September 14, 2026 review confirmed that the current executable Python logic matches that
-baseline. Later application versions should record their own test results and live-validation
-evidence.
+Documentation and comment updates made on September 14 did not change the application’s behavior.
