@@ -141,7 +141,4 @@ For a guided tour, use the [judge quick-start](docs/JUDGE_QUICKSTART.md) or
 
 ## Project ownership
 
-I'm Macdonald ([macbere](https://github.com/macbere)), CareFlow's creator and Project Owner.
-I lead the product direction and review the work.
-
-Licensed under the [MIT License](LICENSE).
+CareFlow AI was created by [Macdonald (macbere)](https://github.com/macbere) and is licensed under the [MIT License](LICENSE).
