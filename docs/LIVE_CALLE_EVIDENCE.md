@@ -1,142 +1,93 @@
-# Live CALL-E Evidence
+# Live CALL-E validation
 
-This document separates CareFlow's real-provider evidence into two complementary layers. The
-goal is to show exactly what was verified without making one experiment stand in for another.
+CareFlow was tested with CALL-E in two settings: earlier calls with a consenting human, and a
+September 11 test of the submission build against the official hackathon US hotline. They
+exercise different parts of the integration.
 
-No recipient phone numbers, credentials, raw transcripts, or private account details are
-included here.
+| Test | Observed result | Scope |
+|---|---|---|
+| Earlier human calls | Spoken recovery answers were returned as structured fields, including an unknown value | Telephony and structured extraction |
+| September 11 submission build | A real call task completed; CareFlow verified its provider data, routed unknown answers to review, and handled replay | Call creation and application processing through the local webhook route |
+| Demo Mode | Deterministic scenarios exercise the downstream workflow | Synthetic product demonstration; no phone call |
 
-## Evidence matrix
+Public inbound webhook delivery was not observed. Recipient phone numbers, credentials,
+private account details, and raw transcripts are excluded from this record.
 
-| Evidence layer | What happened | What it proves | What it does not prove |
-|---|---|---|---|
-| Historical human validation | CALL-E reached a consenting human respondent, asked the recovery questions, and returned structured results that matched the conversation | Real telephony, human conversation handling, per-recipient structured extraction, explicit uncertainty preservation | The final CareFlow webhook trust path |
-| Final frozen-build validation | The frozen CareFlow runtime created a genuine CALL-E task to the official hackathon hotline and processed genuine terminal provider evidence through its authenticated resolver | Real Create Call, authenticated CallTask/Event retrieval, metadata binding, `needs_review` safety routing, sequential replay protection | Public inbound webhook delivery |
-| Demo Mode | Deterministic `MockVoiceClient` scenarios exercise downstream CareFlow workflow | Reliable judge-facing product demonstration | A live phone call |
+## Earlier human calls
 
-## Layer 1 — historical human validation
-
-### Complete eight-answer call
+### Complete recovery answers
 
 Provider call ID: `call_3-bmAXd3HqzJWnK5Fg2Z6w`
 
-- `POST /v1/calls` returned HTTP **201**.
-- The call reached a consenting human respondent and ran through a full conversation.
-- Final CALL-E status: `completed`.
-- `task_completed=true`.
-- Completion confidence: **high / 0.96**.
-- `recipients[0].structured_result` contained all eight requested recovery fields.
-- Each structured value matched what the human actually said in the preserved transcript.
-- CALL-E reported no failure code or failure message.
+- Create Call returned HTTP **201** and reached a consenting human respondent.
+- The task completed with `status="completed"` and `task_completed=true`.
+- `recipients[0].structured_result` contained all eight recovery answers. Each value matched
+  the spoken conversation in the preserved transcript.
+- CALL-E completion confidence was **high / 0.96**, with no failure code or message.
 
-This is the strongest historical proof that CALL-E genuinely performed the recovery interview
-with a human and converted the spoken responses into structured per-recipient evidence.
-
-### Explicit-unknown call
+### An unanswered pain question
 
 Provider call ID: `call_dWj5VxQM2s4lhuFsRiRm8g`
 
-- `POST /v1/calls` returned HTTP **201**.
-- The call reached a consenting human respondent and completed.
-- Final CALL-E status: `completed`.
-- `task_completed=true`.
-- Completion confidence: **high / 0.95**.
-- The respondent deliberately did not provide a numeric pain score.
-- CALL-E returned `pain_level="unknown"` rather than fabricating a number.
-- The other seven recovery fields were present and matched the spoken answers.
+- Create Call returned HTTP **201** and completed with `task_completed=true`.
+- The respondent gave no numeric pain score. CALL-E returned `pain_level="unknown"` and
+  preserved the other seven answers correctly.
+- CALL-E completion confidence was **high / 0.95**.
 
-This call is important because it verifies uncertainty preservation at the provider contract:
-ambiguous numeric evidence was represented explicitly instead of being silently converted into
-reassuring data.
+These were controlled tests of CALL-E's conversation and result contract. They did not run
+those conversations through the final CareFlow webhook resolver.
 
-### Historical-validation boundary
+## September 11 submission-build test
 
-These historical calls were controlled CALL-E provider-contract validations. They prove real
-human telephony and structured-result behavior. They are not presented as evidence that the
-final CareFlow webhook resolver or full frozen runtime processed those exact calls end-to-end.
+The verified submission runtime made exactly one Create Call request to the official hackathon
+US testing hotline.
 
-## Layer 2 — final frozen-build validation
+### Provider response
 
-Verified frozen functional runtime: September 11 submission build.
+- `POST /v1/calls` returned HTTP **201** and a provider call ID.
+- Authenticated CallTask state progressed from `queued` to `completed`, with
+  `task_completed=true` and completion confidence **high / 0.86**.
+- A transcript and per-recipient structured result were returned. All eight recovery answers
+  were explicitly `unknown`; the hotline supplied no usable patient answers.
+- Returned `reference_id` and `discharge_id` metadata matched CareFlow's local records.
+- Authenticated DeveloperEvent retrieval returned a matching terminal `call.completed` event.
 
-On September 11, this frozen runtime created a genuine CALL-E call to the official hackathon US
-testing hotline.
+The confidence values in this document describe CALL-E task completion, not clinical risk.
 
-### Provider evidence
+### Application processing
 
-- Exactly one Create Call POST was issued.
-- `POST /v1/calls` returned HTTP **201**.
-- A real provider call ID was created.
-- Authenticated CallTask state progressed from `queued` to `completed`.
-- `task_completed=true`.
-- CALL-E task-completion confidence: **high / 0.86**.
-- Returned CareFlow `reference_id` and `discharge_id` metadata matched the local records.
-- A transcript and per-recipient structured result were present.
-- All eight recovery fields were explicit `unknown` values because the official hotline did not
-  provide usable patient answers.
-- Authenticated DeveloperEvent retrieval returned a bound terminal `call.completed` event.
+The genuine event ID and call ID were supplied to the local Flask webhook route. The handler
+then fetched the call and DeveloperEvents through authenticated requests, verified the event
+identity/type and correlation metadata, and passed the result to the quality gate.
 
-The 0.86 value is CALL-E task-completion confidence, not a clinical-risk score.
+| Observation | Result |
+|---|---|
+| Webhook response | HTTP **200** |
+| Call and discharge status | `needs_review` |
+| Normal RiskAssessments | **0** |
+| Normal Care Summaries | **0** |
+| Clinical Escalations | **0** |
+| Review timeline events | **1** |
+| Sequential replay of the same event | HTTP **200**, with all artifact counts unchanged |
 
-### CareFlow processing evidence
+This exercised real call creation, authenticated state retrieval, metadata binding, uncertainty
+handling, and sequential replay in the submission build. Since the inbound event was supplied
+locally, it did not verify CALL-E delivery to a public CareFlow endpoint. The
+[architecture](ARCHITECTURE.md) describes the resolver and retry behavior.
 
-CareFlow exercised its local webhook route using only the genuine provider event ID and call ID
-as the inbound envelope. The handler then followed the normal trust path:
+## Nigerian-destination attempt
 
-```text
-untrusted event/call envelope
-  -> authenticated GET /v1/calls/{id}
-  -> authenticated GET /v1/calls/{id}/events
-  -> exact DeveloperEvent identity/type binding
-  -> reference_id + discharge_id binding
-  -> result-quality gate
-  -> CareFlow workflow
-```
+A separate test, with consent and a valid credential, attempted a call to Nigeria. CALL-E
+rejected it before dialing with HTTP **422** and `call_not_ready`, reporting that Nigeria in
+English was unsupported at the time. No provider call ID was created, no phone call occurred,
+and no retry was made. The response identified a destination/language restriction.
 
-Observed result:
+## What remains to be tested
 
-- Local webhook route returned HTTP **200**.
-- `FollowUpCall` became `needs_review`.
-- `Discharge` became `needs_review`.
-- Normal RiskAssessment count: **0**.
-- Normal Care Summary count: **0**.
-- Clinical Escalation count: **0**.
-- Review timeline count: **1**.
-- Replaying the same genuine terminal event returned HTTP **200**.
-- Artifact counts were unchanged after replay; no duplicates were created.
+- Actual public inbound webhook delivery, observed independently of local replay.
+- Concurrent processing guarantees beyond the sequential/retry cases already tested.
+- External notification delivery once a real adapter is implemented.
 
-### Frozen-build boundary
-
-Public inbound webhook delivery was not directly observed. The genuine event envelope was
-initiated locally; the route then authenticated provider state and DeveloperEvents exactly as it
-would for an inbound notification. CareFlow therefore claims verified trust-path processing,
-not verified public webhook delivery.
-
-## Combined interpretation
-
-The two evidence layers answer different questions:
-
-1. **Can CALL-E genuinely call a human and capture recovery answers accurately?** Yes — the
-   historical human validation demonstrates this directly.
-2. **Can the final CareFlow runtime create a real CALL-E task and safely process genuine provider
-   evidence?** Yes — the frozen-build validation demonstrates real creation, authenticated
-   resolution, metadata binding, uncertainty routing, and replay protection.
-3. **Can judges evaluate the product without depending on live telephony?** Yes — Demo Mode
-   provides deterministic downstream scenarios while remaining explicitly labeled as mock.
-
-Together, these layers provide stronger evidence than either one alone while preserving the
-truth boundary of each experiment.
-
-## Additional provider boundary
-
-A separate consenting Nigerian-destination Create Call attempt was rejected before dialing with
-HTTP **422** `call_not_ready`, with CALL-E stating that Nigeria in English was not currently
-supported. No provider call ID was created. This is recorded as provider region/language
-availability, not as a CareFlow request-contract or authentication failure.
-
-## Related documents
-
-- [Current Verification Status](CURRENT_VERIFICATION_STATUS.md)
-- [Architecture](ARCHITECTURE.md)
-- [Demo Recording Plan](DEMO_RECORDING_PLAN.md)
-- [Devpost Submission Package](DEVPOST_SUBMISSION.md)
+For the application test status and deployment limits, see
+[verification status](CURRENT_VERIFICATION_STATUS.md). Future live tests are covered by the
+[validation checklist](LIVE_CALLE_VALIDATION_CHECKLIST.md).

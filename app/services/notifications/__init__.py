@@ -1,10 +1,4 @@
-"""
-Factory for selecting the active notification channel based on config.
-
-Mirrors app/services/calle/__init__.py's get_voice_client() pattern for
-consistency. Only "log" exists in Phase 2; the branch structure is here so
-adding NOTIFICATION_PROVIDER=smtp/slack/sms later is a small, obvious diff.
-"""
+"""Return the notification service. Only the log channel is implemented."""
 from app.services.notifications.base import NotificationService
 from app.services.notifications.log_notifier import LogNotificationService
 

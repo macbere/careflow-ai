@@ -11,11 +11,10 @@ class EscalationEvent(db.Model):
         db.Integer, db.ForeignKey("risk_assessments.id"), unique=True, nullable=False
     )
 
-    # triggered -> notified -> acknowledged (Phase 1 only implements up to "notified")
+    # triggered -> notified -> acknowledged; notified currently means logged.
     status = db.Column(db.String(20), default="triggered", nullable=False)
 
-    # What action was taken. Phase 1 implements a stubbed notification;
-    # later phases can extend this to real nurse/caregiver paging.
+    # Delivery detail from the notification adapter; currently a log entry.
     action_taken = db.Column(db.String(120), nullable=True)
 
     triggered_at = db.Column(db.DateTime, default=utcnow)

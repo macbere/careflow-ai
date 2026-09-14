@@ -1,20 +1,8 @@
-"""
-Dashboard — Phase 2 operations console.
+"""Dashboard views and form actions for the synthetic-data demo.
 
-Design goal per the Phase 2 brief: the landing page should immediately
-answer four questions (which patients need attention, which follow-ups are
-pending, which escalations are unresolved, which calls completed today) —
-so those four queries are what this module is built around, not a generic
-"list everything" view.
-
-This module also hosts the demo action routes (create patient, discharge +
-initiate call, simulate webhook) as plain HTML form POSTs that redirect
-back to the dashboard. Plain forms (no JS) are used deliberately: this is
-demo-video-friendly (every state change is a full page load showing the
-new state) and keeps the reviewer's demo path fully readable as Flask
-routes rather than client-side JS. The underlying logic is identical to the
-JSON API in app/api/*.py — these routes are thin wrappers, not a second
-implementation.
+The panels show follow-up priorities, pending work, unresolved escalations,
+and completed calls. Form actions redirect after each change and reuse the
+services behind the JSON API.
 """
 import uuid
 from datetime import timedelta
@@ -52,8 +40,7 @@ dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
 @dashboard_bp.get("")
 def index():
-    # 1. Which patients need attention? -> unresolved (non-acknowledged)
-    #    escalations, newest first.
+    # Show unresolved escalations, newest first.
     needs_attention = (
         EscalationEvent.query.join(RiskAssessment)
         .filter(EscalationEvent.status != "acknowledged")
@@ -61,18 +48,13 @@ def index():
         .all()
     )
 
-    # 2. Which follow-ups are pending? -> discharges that haven't had a
-    #    completed valid result yet, including data-quality holds that
-    #    explicitly require human review.
+    # Include discharges waiting on calls or a review of unusable answers.
     pending_follow_ups = get_pending_follow_ups()
 
-    # 3. Which escalations remain unresolved? (same underlying set as #1,
-    #    shown as its own panel since the brief calls it out separately —
-    #    "needs attention" foregrounds the patient, this panel foregrounds
-    #    the escalation workflow state.)
+    # The patient and escalation panels use the same unresolved records.
     unresolved_escalations = needs_attention
 
-    # 4. Which calls were completed today?
+    # Count completions from midnight UTC.
     today_start = utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
     calls_completed_today = (
         FollowUpCall.query.filter(

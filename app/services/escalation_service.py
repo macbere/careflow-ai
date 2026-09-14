@@ -1,11 +1,7 @@
-"""
-Escalation service.
+"""Create and acknowledge escalations, with notification and timeline records.
 
-Depends only on the abstract NotificationService interface (Phase 2
-refactor) — never on a concrete channel. Also logs an "Escalation
-Triggered" and "Notification Sent" timeline event pair, since escalation is
-one of the most important moments in the whole workflow to have visible in
-the chronological feed.
+Delivery goes through NotificationService. The default implementation logs
+the notification without sending an external message.
 """
 
 from app.extensions import db, logger, utcnow

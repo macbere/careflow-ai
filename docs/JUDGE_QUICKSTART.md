@@ -1,20 +1,22 @@
-# Judge Quick-Start
+# Judge quick-start
 
-CareFlow AI can be evaluated end to end in mock mode without a CALL-E account, API key,
-phone number, or credits.
+CareFlow AI is a synthetic-data prototype for **CALL-E: Your Code Is Calling**.
 
-## Fastest path — hosted demo
+## Hosted demo
 
-Open **https://careflowai.pythonanywhere.com** and select **Run Demo Mode**, then run the
-**High Risk** scenario.
+Open the [dashboard](https://careflowai.pythonanywhere.com), select **Run Demo Mode**, and run
+**High Risk**. Inspect the answers, score, reasons, escalation, Care Summary, and timeline.
+Acknowledge the escalation to see its state change.
 
-The hosted judge demo is configured with the deterministic mock provider. It uses synthetic data,
-places no real phone call, requires no CALL-E credentials, and exercises the same downstream
-CareFlow orchestration used after trusted provider resolution.
+The hosted demo uses a deterministic mock provider. No account, API key, phone number, credits,
+or real call is needed. Notification delivery is logged; no external message is sent.
 
-Health check: **https://careflowai.pythonanywhere.com/health**
+[Watch the video](https://youtu.be/zMXSo5HUZ3o) ·
+[Check service health](https://careflowai.pythonanywhere.com/health)
 
-## Run the product locally
+## Local setup
+
+Requires Python 3.10 or newer.
 
 ```bash
 git clone https://github.com/macbere/careflow-ai.git
@@ -27,72 +29,50 @@ python -m app.seed
 python run.py
 ```
 
-Open `http://localhost:5000/dashboard` → **Open Demo Mode** → **Run High Risk**.
+Open `http://localhost:5000/dashboard`, select **Open Demo Mode**, then **Run High Risk**.
+For the other scenarios and a longer tour, see the [walkthrough](DEMO_WALKTHROUGH.md).
 
-This creates a synthetic patient and runs the downstream workflow through the deterministic
-`MockVoiceClient`. **No real phone call occurs and no CALL-E credits are used.** The call detail
-page shows structured evidence, explainable risk, escalation, logged notification state, Care
-Summary, acknowledgement, and the audit timeline.
-
-## Run the safe suite
+## Automated tests
 
 ```bash
 python -m pytest -q
 ```
 
-`pytest.ini` restricts collection to the credential-free application and contribution tests.
-It excludes manual live scripts under `validation-experiments/`. The final safe suite has
-**149 passing tests** with one pre-existing SQLAlchemy `Query.get()` `LegacyAPIWarning`.
+The submission suite has **149 passing tests**, with one existing SQLAlchemy `Query.get()`
+`LegacyAPIWarning`. `pytest.ini` excludes manual live experiments; the suite needs no API key.
 
-## Verify meaningful CALL-E usage
+## Inspect the CALL-E integration
 
-- `app/services/calle/calle_client.py` builds the goal-driven task, plural `recipients`,
-  aggregate and per-recipient schemas, CareFlow metadata, optional webhook URL, and an explicit
-  attempt-unique `Idempotency-Key`; it uses `https://api.heycall-e.com`.
-- `app/api/webhooks.py` treats an inbound webhook as an untrusted wake-up envelope and resolves
-  it through authenticated call and DeveloperEvent retrieval before any database mutation.
-- `app/services/call_orchestrator.py` verifies CareFlow metadata binding, applies the
-  `needs_review` quality gate, and resumes the valid terminal workflow safely on replay.
-- `app/services/calle/mock_client.py` implements the same interface for local development and
-  Demo Mode; it is not live CALL-E evidence.
+| File | What to look for |
+|---|---|
+| `app/services/calle/calle_client.py` | Goal-driven requests, recipients, result schemas, metadata, callback URL, and idempotency keys |
+| `app/api/webhooks.py` | Authenticated call/event retrieval before processing an inbound notification |
+| `app/services/call_orchestrator.py` | Local metadata checks, result-quality gate, workflow processing, and sequential replay handling |
+| `app/services/calle/mock_client.py` | The mock provider used for deterministic tests and demonstrations |
 
-See [Architecture](ARCHITECTURE.md), [Live CALL-E Evidence](LIVE_CALLE_EVIDENCE.md), and
-[Current Verification Status](CURRENT_VERIFICATION_STATUS.md).
+The [architecture](ARCHITECTURE.md) explains the request and processing paths.
 
-## Verify the live-evidence story
+## Live validation
 
-CareFlow keeps its real-provider evidence in two separate layers:
+Earlier CALL-E tests reached a consenting human and extracted structured recovery answers. The
+September 11 submission-build test created a real task to the official hotline and processed its
+authenticated results through the local webhook route. These tested different parts of the
+integration. **Public inbound webhook delivery was not observed.**
 
-- **Historical human validation:** genuine CALL-E calls reached a consenting human respondent
-  and returned structured recovery answers matching the spoken conversation, including an
-  explicit `unknown` pain value when no numeric score was given.
-- **Final frozen-build validation:** the frozen CareFlow runtime created a genuine CALL-E task
-  through the official hackathon US testing hotline and safely processed genuine terminal
-  provider evidence through its authenticated trust path.
+See the [live evidence record](LIVE_CALLE_EVIDENCE.md) for individual results, including the
+Nigerian-destination attempt that CALL-E rejected before dialing. The
+[verification status](CURRENT_VERIFICATION_STATUS.md) lists remaining limits.
 
-These two validations prove different parts of the product and are intentionally not presented
-as one end-to-end public-webhook test.
+## Community contribution
 
-## Verify the community contribution
-
-The reusable `structured-outcome-followup-call` Agent Skill is under
-`calle-contrib/structured-outcome-followup-call/` and was merged in
+The reusable `structured-outcome-followup-call` Agent Skill was merged in
 [CALL-E PR #268](https://github.com/CALLE-AI/awesome-phone-call-agents/pull/268).
 
 ```bash
 python calle-contrib/structured-outcome-followup-call/scripts/orchestrate_example.py
 ```
 
-It is a dependency-free, non-healthcare demonstration of the general pattern:
-call → structured result → deterministic rubric → downstream action.
+This dependency-free example uses a non-healthcare delivery scenario. A copy and tests are in
+`calle-contrib/structured-outcome-followup-call/`.
 
-## Important boundaries
-
-- The hosted judge demo and local Demo Mode are mock-based; neither is presented as live-call evidence.
-- A separate consenting Nigerian-destination attempt was rejected before dialing with HTTP 422
-  `call_not_ready`; CALL-E stated that Nigeria in English was not currently supported.
-- Actual public inbound webhook delivery has not been directly observed; authenticated
-  trust/replay behavior is covered by automated tests and was exercised locally with a genuine
-  terminal provider event.
-- `LogNotificationService` logs/simulates delivery. No external messaging provider exists.
-- Synthetic data only; not HIPAA-reviewed or production-ready.
+CareFlow is not HIPAA-reviewed or ready for real patient use. Enter synthetic data only.

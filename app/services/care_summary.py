@@ -1,13 +1,8 @@
-"""
-Care Summary service.
+"""Generate and store a care summary from a completed call.
 
-Generates a structured, human-readable summary of a completed follow-up
-call. Phase 2 constraint: deterministic only, no LLM. The generator is
-built behind an abstract `CareSummaryGenerator` interface specifically so a
-future LLM-based generator can be swapped in (to *replace* the deterministic
-one) or composed alongside it (to *augment* it, e.g. adding a natural-
-language narrative on top of these structured fields) without touching
-`call_orchestrator.py` or any API/dashboard code that reads a CareSummary.
+The current generator uses structured answers and the stored assessment.
+It makes no model calls. CareSummaryGenerator defines the interface for
+summary implementations.
 """
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
@@ -59,11 +54,7 @@ _ANSWER_KEY_TO_SYMPTOM_LABEL = {
 
 
 class DeterministicCareSummaryGenerator(CareSummaryGenerator):
-    """
-    Phase 2's only generator. Builds the summary purely from structured data
-    already on the call/risk assessment — no free-text interpretation, no
-    model calls, fully reproducible given the same inputs.
-    """
+    """Build a reproducible summary from stored answers and assessment data."""
 
     def generate(self, call: FollowUpCall) -> CareSummaryData:
         answers = call.structured_answers or {}

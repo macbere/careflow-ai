@@ -1,30 +1,14 @@
-# Live CALL-E Validation — Current Record and Future Checklist
+# Live validation checklist
 
-This document records what was actually validated and what remains unobserved. It is not an
-instruction to place another call during submission hardening.
+Use this checklist for a future, separately approved live test. The existing submission results
+are recorded in [live evidence](LIVE_CALLE_EVIDENCE.md); this checklist is not a record of a new
+call or an instruction to place one.
 
-## Current evidence
+## Setup
 
-- Historical genuine CALL-E calls reached a consenting human respondent and completed.
-- Per-recipient structured results were retrieved successfully.
-- One historical completed result preserved `pain_level="unknown"` rather than inventing a
-  numeric value.
-- On September 11, the frozen CareFlow runtime successfully created a genuine CALL-E call to
-  the official hackathon US testing hotline with HTTP **201**.
-- That authenticated CallTask progressed from `queued` to `completed`, returned a transcript,
-  a per-recipient structured result, and matching CareFlow correlation metadata.
-- CareFlow retrieved the bound terminal DeveloperEvent, re-fetched authoritative provider state,
-  and safely routed the all-`unknown` result to `needs_review` with no normal clinical artifacts.
-- Sequential replay of the same genuine terminal event created no duplicate downstream artifacts.
-- A separate consenting Nigerian-destination Create Call attempt was rejected before dialing
-  with HTTP **422** `call_not_ready`; CALL-E stated that Nigeria in English was not currently
-  supported. No provider call ID was created for that attempt.
-- Actual public inbound webhook delivery has not been directly observed.
-- Authenticated resolution, forged-body rejection, DeveloperEvent identity/type checks,
-  CareFlow metadata binding, nonterminal retry, sequential replay recovery, and terminal
-  evidence conflict are covered by automated tests.
-
-## Current configuration contract
+Obtain the Project Owner's approval and the recipient's consent. Check CALL-E's current terms,
+E.164 phone formatting, and destination/language support. The earlier Nigerian-destination
+attempt was rejected before dialing, so support must be checked again before any future test.
 
 ```dotenv
 VOICE_PROVIDER=calle
@@ -34,29 +18,23 @@ CALLE_WEBHOOK_URL=https://your-public-host.example/api/webhooks/calle
 CALLE_WEBHOOK_SECRET=
 ```
 
-`CALLE_WEBHOOK_URL` is optional. `CALLE_WEBHOOK_SECRET` is unused and is not an HMAC/shared
-secret requirement. The trust boundary is authenticated CallTask plus DeveloperEvent retrieval
-and CareFlow metadata binding.
+`CALLE_WEBHOOK_URL` is optional. `CALLE_WEBHOOK_SECRET` is unused. CareFlow verifies results by
+fetching authenticated CallTask and DeveloperEvent data and checking local correlation metadata.
+Keep keys, phone numbers, raw recipient payloads, and transcripts out of public logs and Git.
 
-## Optional future live validation
+## Checks
 
-Only perform another live validation with separate owner authorization, a consenting E.164
-recipient in a currently supported region, and secure environment configuration. Never commit
-or print the key, phone number, raw recipient payload, or transcript.
+- [ ] Record the Create Call response and confirm a provider call ID was returned.
+- [ ] Confirm with the consenting recipient whether the phone rang.
+- [ ] Retrieve terminal CallTask state and the per-recipient structured result.
+- [ ] Check that spoken answers, including explicit unknown values, match the returned fields.
+- [ ] If testing public delivery, record the inbound webhook independently of local replay.
+- [ ] Check authenticated event identity/type and the `reference_id` / `discharge_id` binding.
+- [ ] Check the assessment, summary, and escalation path for valid, complete evidence.
+- [ ] Check that unusable evidence becomes `needs_review`, with no normal clinical artifacts.
+- [ ] Replay the terminal event and check for duplicate records.
+- [ ] Record notification output as logged/simulated unless a real adapter is in use.
 
-- [ ] Confirm current CALL-E terms and destination-region support before Create Call.
-- [ ] Confirm the request returns a provider call ID before claiming a call was created.
-- [ ] Confirm the consenting phone actually rings before claiming a dial occurred.
-- [ ] Confirm terminal CallTask state and per-recipient structured result.
-- [ ] Confirm any explicit `unknown` values are preserved by CareFlow.
-- [ ] If testing public delivery, confirm the exact inbound webhook was observed independently
-      of local replay.
-- [ ] Confirm the envelope resolves through authenticated call and DeveloperEvent retrieval.
-- [ ] Confirm `reference_id` and `discharge_id` metadata bind to the local call.
-- [ ] Confirm valid complete evidence creates the expected assessment/summary/escalation path.
-- [ ] Confirm unusable evidence creates `needs_review` with no normal clinical artifacts.
-- [ ] Confirm notification output is described as logged/simulated unless a real adapter exists.
-
-Do not claim universal concurrent exactly-once behavior from sequential replay tests.
-
-Canonical current state: [Current Verification Status](CURRENT_VERIFICATION_STATUS.md).
+Sequential replay results do not establish concurrent exactly-once processing. Update the
+[evidence record](LIVE_CALLE_EVIDENCE.md) and [verification status](CURRENT_VERIFICATION_STATUS.md)
+with the observed results and any remaining gaps.

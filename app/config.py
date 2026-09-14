@@ -39,7 +39,7 @@ class Config:
     # Leave unset to use the account default.
     CALLE_WEBHOOK_URL = os.environ.get("CALLE_WEBHOOK_URL", "")
 
-    # Notification channel: "log" (Phase 2 default/only option).
+    # Only the log notification channel is implemented.
     NOTIFICATION_PROVIDER = os.environ.get("NOTIFICATION_PROVIDER", "log")
 
     LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")

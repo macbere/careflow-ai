@@ -76,16 +76,9 @@ def test_missing_pain_level_is_treated_conservatively():
     assert any("not captured" in reason.lower() for reason in result.reasons)
 
 
-# ---------------------------------------------------------------------------
-# UNKNOWN-VALUE REGRESSION TESTS
-#
-# These exist specifically to prevent the confirmed defect from returning:
-# risk_engine.py's original string-compatibility helpers converted "yes"/"no"
-# but silently left "unknown" to fall through every is-True/is-False/
-# isinstance check, contributing zero score and no reason — indistinguishable
-# from that field's reassuring answer. Each test below asserts the opposite:
-# "unknown" must always contribute a non-zero, explained score.
-# ---------------------------------------------------------------------------
+# Regression coverage: legacy string conversion once let unknown answers
+# score like reassuring ones. These direct scorer tests keep unknown values
+# distinct; the orchestrator quality gate handles them before normal scoring.
 
 def _all_reassuring_string_answers():
     return {

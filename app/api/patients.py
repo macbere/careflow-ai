@@ -1,11 +1,7 @@
-"""
-Patients API.
+"""List and create synthetic patients, and retrieve their timelines.
 
-Phase 2 adds patient creation (needed for the "create a synthetic patient"
-step of the demo flow) and a timeline endpoint. Every synthetic MRN is
-forced to a "SYN-" prefix here — not just documented as a convention — so
-it's structurally impossible to create a patient row that looks like real
-PHI through this API.
+Created records use a SYN- medical-record prefix. This is a demo label;
+it does not anonymize any names or other data supplied to the API.
 """
 import uuid
 
@@ -27,12 +23,7 @@ def list_patients():
 
 @patients_bp.post("")
 def create_patient():
-    """
-    Create a synthetic patient. `synthetic_mrn` is optional — if omitted, a
-    fresh "SYN-" MRN is generated. If provided, it's still forced to carry
-    the "SYN-" prefix, so this endpoint can never be used to store a
-    real-looking MRN.
-    """
+    """Create a demo patient with a generated or supplied SYN-prefixed MRN."""
     payload = request.get_json(force=True) or {}
     full_name = payload.get("full_name")
     phone_number = payload.get("phone_number")

@@ -1,12 +1,6 @@
-"""
-Executive dashboard KPI calculations.
+"""Calculate dashboard KPIs and the pending follow-up queue.
 
-Factored out of app/api/dashboard.py into a plain function so it's testable
-directly against the database without going through a Flask route/template
-(Flask-SQLAlchemy/pytest aren't installable in this build sandbox — see the
-Phase 1/2 status reports — but this separation means whoever runs the test
-suite with network access gets real coverage of the KPI math itself, not
-just an HTML page).
+Queries live here so routes and database tests use the same definitions.
 """
 from dataclasses import dataclass
 from app.extensions import utcnow

@@ -1,4 +1,4 @@
-"""Phase B integration tests for trusted snapshots and replay-safe processing."""
+"""Integration tests for authenticated provider results and sequential replay."""
 from copy import deepcopy
 
 import pytest

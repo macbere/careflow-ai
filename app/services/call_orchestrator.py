@@ -1,18 +1,9 @@
-"""
-Call orchestrator.
+"""Coordinate follow-up calls, result review, scoring, and escalation.
 
-This is the only module that coordinates across the voice provider, the
-database, the risk engine, the escalation service, and (Phase 2) the
-timeline and care summary services. It implements the full workflow:
-
-    Discharge created -> CALL-E follow-up initiated -> patient answers
-    -> structured answers stored -> webhook processed -> risk engine
-    triggered -> (if high risk) escalation triggered -> care summary
-    generated
-
-Every step also writes a TimelineEvent, so the dashboard's chronological
-feed and any future audit requirement are covered by construction rather
-than bolted on afterward.
+The live webhook route resolves provider state before passing an event
+here. Complete, valid answers proceed to scoring and summary generation;
+unusable answers are preserved for review. Timeline entries record each
+workflow transition.
 """
 from datetime import datetime
 from typing import Any, Dict

@@ -1,12 +1,4 @@
-"""
-Timeline service.
-
-Single entry point for writing TimelineEvent rows, so every part of the app
-logs events the same way instead of constructing TimelineEvent objects
-inline. Keeping this as one small function (rather than a class) matches
-its actual complexity — it's a thin, well-documented wrapper, not a service
-with state.
-"""
+"""Write and retrieve timeline events for patients, discharges, and calls."""
 from typing import Any, Dict, Optional
 
 from app.extensions import db, logger

@@ -1,11 +1,6 @@
-"""
-Demo scenario definitions.
+"""Shared scenario definitions for Demo Mode and its dashboard picker.
 
-Each scenario maps a human-readable name to a diagnosis (for a realistic-
-looking synthetic discharge) and the mock-client scenario key that produces
-a deterministic outcome. These are the five scenarios Phase 3 calls for —
-kept as plain data here so `demo_mode.py` and the dashboard's scenario
-picker both read from one source of truth.
+Each synthetic diagnosis maps to a deterministic mock-provider outcome.
 """
 from dataclasses import dataclass
 

@@ -1,64 +1,55 @@
-# Demo Walkthrough
+# Demo walkthrough
 
-## Recommended one-click path
+## Run a scenario
 
-1. Start the app with `VOICE_PROVIDER=mock` and open `http://localhost:5000/dashboard`.
-2. Select **Open Demo Mode**.
-3. Select **Run High Risk**.
-4. On the call detail page, show the structured evidence, deterministic score, reasons,
-   recommended action, escalation, Care Summary, and timeline.
-5. Acknowledge the escalation and show the real state/timeline update.
+1. Open the [hosted dashboard](https://careflowai.pythonanywhere.com), or start the app locally
+   with `VOICE_PROVIDER=mock` and open `http://localhost:5000/dashboard`.
+2. Open Demo Mode and choose **High Risk**.
+3. On call detail, inspect the structured answers, score and reasons, recommended action,
+   escalation, Care Summary, and timeline.
+4. Acknowledge the escalation and check the status and timeline update.
 
-Demo Mode uses `MockVoiceClient`. It creates a synthetic patient and simulated provider outcome;
-no phone is dialed and no CALL-E credits are consumed. The downstream orchestrator is the same
-one used after a trusted real-provider event.
+Demo Mode creates a synthetic patient and a simulated provider outcome. It places no call and
+uses no CALL-E credits, even when the normal voice provider is configured as `calle`. It uses
+the same downstream orchestrator as verified real-provider results.
 
-The escalation is genuine application state. Notification delivery is currently
-logged/simulated through `LogNotificationService`; external SMS, email, Slack, or paging is not
-implemented. Acknowledgement is a genuine application-state transition.
+The escalation and acknowledgement are stored application state. `LogNotificationService`
+records simulated delivery; external SMS, email, Slack, and paging are not implemented.
 
-## Optional contrast: `needs_review`
+## Other scenarios
 
-Use an automated test explanation or a prepared synthetic review record to show that incomplete,
-invalid, missing, null, or explicitly unknown structured evidence does not enter the normal
-clinical path. CareFlow preserves it as `needs_review` and creates no normal RiskAssessment,
-normal Care Summary, or clinical escalation.
+| Scenario | Expected result |
+|---|---|
+| Healthy Recovery | Low risk, summary, no escalation |
+| Moderate Concern | Medium risk, summary, no escalation |
+| High Risk | High risk, escalation, and summary |
+| Failed Call | Failed status, no risk assessment or summary |
+| No Answer | No-answer status, no risk assessment or summary |
 
-Do not alter Demo Mode or run a credential-gated validation script merely to show this point.
+## Explain missing information
 
-## What to say about real CALL-E
+Use the automated tests or a prepared synthetic review record to show `needs_review`. This is
+not one of the five Demo Mode buttons. Missing, invalid, incomplete, null, or explicitly unknown
+answers are preserved for a person to review, with no normal RiskAssessment, Care Summary, or
+clinical escalation. Demonstrating this path does not require a live call.
 
-Point to `app/services/calle/calle_client.py`, `app/api/webhooks.py`, and
-`app/services/call_orchestrator.py`:
+## Explain the real integration
 
-- outbound calls use a goal-driven task, plural recipients, aggregate and per-recipient
-  schemas, CareFlow metadata, and an attempt-unique idempotency key;
-- the webhook body is an untrusted wake-up envelope, not clinical truth;
-- CareFlow authenticates call and DeveloperEvent retrieval, binds exact event/call identity and
-  local metadata, then applies the result-quality gate;
-- nonterminal/fetch failures return retryable HTTP 503; tested sequential replays avoid
-  duplicate artifacts, without claiming universal concurrent exactly-once behavior.
+The [architecture](ARCHITECTURE.md) follows a real call from the outbound request through
+provider verification and the result-quality gate. The [live evidence record](LIVE_CALLE_EVIDENCE.md)
+keeps the earlier human-call tests separate from the September 11 application test. The latter
+used a real provider event through the local webhook route; public inbound delivery was not
+observed. The evidence record also documents the Nigerian-destination rejection before dialing.
 
-Present the live evidence in two layers. Historical controlled CALL-E calls reached a consenting
-human respondent and verified structured extraction, including preservation of an unavailable
-pain score as `unknown`. Separately, the frozen CareFlow runtime successfully created a genuine
-CALL-E call through the official hackathon US testing hotline and processed genuine terminal
-provider evidence through the authenticated trust path. Actual public inbound webhook delivery
-was not directly observed.
+## Show the contribution
 
-A separate consenting Nigerian-destination attempt was rejected before dialing with HTTP 422
-`call_not_ready`, with CALL-E stating that Nigeria in English was not currently supported. No
-provider call ID was created for that attempt.
-
-## Community contribution
-
-Show `calle-contrib/structured-outcome-followup-call/` and the official merged
-[CALL-E PR #268](https://github.com/CALLE-AI/awesome-phone-call-agents/pull/268). The standalone
-example uses a non-healthcare delivery-exception domain and requires no application setup:
+Open [merged CALL-E PR #268](https://github.com/CALLE-AI/awesome-phone-call-agents/pull/268).
+The standalone example is also available locally:
 
 ```bash
 python calle-contrib/structured-outcome-followup-call/scripts/orchestrate_example.py
 ```
 
-For the timed narration, use [Demo Recording Plan](DEMO_RECORDING_PLAN.md). For all current
-evidence boundaries, use [Current Verification Status](CURRENT_VERIFICATION_STATUS.md).
+It uses a non-healthcare delivery scenario and requires no application setup or credentials.
+Use the [recording plan](DEMO_RECORDING_PLAN.md) for a timed tour and
+[verification status](CURRENT_VERIFICATION_STATUS.md) for current limits.

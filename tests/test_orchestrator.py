@@ -1,7 +1,7 @@
-"""
-Integration test proving the full Phase 1 workflow works end to end using
-the mock voice client: Discharge -> call initiated -> webhook processed
--> risk engine -> escalation (for the high-risk scenario).
+"""Integration tests for the mock-provider follow-up workflow.
+
+Cover call initiation, event processing, result review, scoring, escalation,
+summary generation, and timeline updates.
 """
 from datetime import datetime
 
@@ -125,11 +125,11 @@ def test_low_risk_call_does_not_escalate(app, db):
     assert updated_call.risk_assessment.risk_level == "low"
     assert updated_call.risk_assessment.escalation is None
 
-    # Phase 2: care summary generated, escalation_status reflects "none"
+    # Low-risk completion has a summary without an escalation.
     assert updated_call.care_summary is not None
     assert updated_call.care_summary.escalation_status == "none"
 
-    # Phase 2: every stage logged a timeline event
+    # Each completed workflow stage has a timeline event.
     events = get_timeline(patient_id=updated_call.discharge.patient_id)
     event_types = {e.event_type for e in events}
     assert "calle_follow_up_initiated" in event_types
@@ -159,7 +159,7 @@ def test_high_risk_call_triggers_escalation(app, db):
     assert updated_call.risk_assessment.escalation is not None
     assert updated_call.risk_assessment.escalation.status == "notified"
 
-    # Phase 2: care summary reflects the escalation, and the full event
+    # The care summary reflects the escalation, and the full event
     # sequence (including escalation + notification) was logged
     assert updated_call.care_summary.escalation_status == "notified"
     event_types = {e.event_type for e in get_timeline(patient_id=updated_call.discharge.patient_id)}
