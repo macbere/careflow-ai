@@ -102,4 +102,4 @@ change product logic. CareFlow uses synthetic data only, is not HIPAA-reviewed, 
 production or compliance claim. See [verification status](CURRENT_VERIFICATION_STATUS.md).
 
 Project Owner: Macdonald ([macbere](https://github.com/macbere)). I lead the product direction
-and review, with AI assistance for implementation and documentation.
+and review the work.
